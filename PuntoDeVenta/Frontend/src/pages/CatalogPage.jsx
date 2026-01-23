@@ -1,35 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { apiCall } from '../utils/api';
 import ProductCard from '../components/common/ProductCard';
+import CategorySidebar from '../components/common/CategorySidebar';
 import './CatalogPage.css';
 
-const API_URL = 'http://localhost:3000/api';
-
-const CatalogPage = ({ onViewProduct, selectedCategory }) => {
+const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCategory }) => {
     const [piezas, setPiezas] = useState([]);
+    const [filteredPiezas, setFilteredPiezas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [retryCount, setRetryCount] = useState(0);
 
+    // Fetch Piezas effect - decoupled from selectedCategory
     useEffect(() => {
         fetchPiezas();
-    }, [selectedCategory, retryCount]);
+    }, [retryCount]);
+
+    // Filtering Effect
+    useEffect(() => {
+        let result = [...piezas];
+
+        // 1. Filter by Category
+        if (selectedCategory) {
+            result = result.filter(pieza => pieza.Id_CategoriaPieza === selectedCategory);
+        }
+
+        // 2. Filter by Search Query
+        if (searchQuery) {
+            const lowerQuery = searchQuery.toLowerCase();
+            result = result.filter(pieza =>
+                pieza.Nombre.toLowerCase().includes(lowerQuery) ||
+                (pieza.Descripcion && pieza.Descripcion.toLowerCase().includes(lowerQuery))
+            );
+        }
+
+        setFilteredPiezas(result);
+    }, [searchQuery, selectedCategory, piezas]);
 
     const fetchPiezas = async () => {
         try {
             setLoading(true);
             setError(null);
-            const response = await fetch(`${API_URL}/piezas`);
-            if (!response.ok) {
-                throw new Error('Error al cargar las piezas');
+
+            // Fetch ALL pieces to keep sidebar populated
+            let data = await apiCall('/piezas');
+
+            if (!Array.isArray(data)) {
+                console.error('API response is not an array:', data);
+                data = [];
             }
-            let data = await response.json();
-            
-            // Filtrar por categoría si está seleccionada
-            if (selectedCategory) {
-                data = data.filter(pieza => pieza.Id_CategoriaPieza === selectedCategory);
-            }
-            
+
             setPiezas(data);
+            // Initial render will trigger the filtering effect
         } catch (err) {
             setError(err.message);
             console.error('Error fetching piezas:', err);
@@ -42,52 +64,51 @@ const CatalogPage = ({ onViewProduct, selectedCategory }) => {
         setRetryCount(prev => prev + 1);
     };
 
-    if (loading) {
-        return (
-            <div className="catalog-page">
-                <div className="catalog-loading">Cargando piezas médicas...</div>
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div className="catalog-page">
-                <div className="catalog-error">
-                    <p>Error: {error}</p>
-                    <button onClick={handleRetry}>Reintentar</button>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <div className="catalog-page">
-            <div className="catalog-header">
-                <h2 className="catalog-title">Piezas de Equipos Médicos</h2>
-                <p className="catalog-subtitle">
-                    Piezas excedentes de ingenieros de mantenimiento. Calidad garantizada.
-                </p>
-            </div>
+            <div className="catalog-layout">
+                <div className="catalog-sidebar-wrapper">
+                    <CategorySidebar
+                        selectedCategory={selectedCategory}
+                        onSelectCategory={onSelectCategory}
+                        products={piezas} // Pass ALL products so categories don't disappear
+                    />
+                </div>
 
-            {piezas.length === 0 && !loading ? (
-                <div className="catalog-empty">
-                    <p>No hay piezas disponibles en este momento.</p>
-                    <button onClick={handleRetry} style={{ marginTop: '1rem', padding: '0.5rem 1rem', cursor: 'pointer' }}>
-                        Recargar
-                    </button>
+                <div className="catalog-content">
+                    <div className="catalog-header">
+                        <h2 className="catalog-title">Explorar todo</h2>
+                    </div>
+
+                    {loading ? (
+                        <div className="catalog-loading">Cargando piezas médicas...</div>
+                    ) : error ? (
+                        <div className="catalog-error">
+                            <p>Error: {error}</p>
+                            <button onClick={handleRetry}>Reintentar</button>
+                        </div>
+                    ) : filteredPiezas.length === 0 ? (
+                        <div className="catalog-empty">
+                            <p>No se encontraron piezas{searchQuery ? ` para "${searchQuery}"` : ''}.</p>
+                            {searchQuery ? null : (
+                                <button onClick={handleRetry} style={{ marginTop: '1rem', padding: '0.5rem 1rem', cursor: 'pointer' }}>
+                                    Recargar
+                                </button>
+                            )}
+                        </div>
+                    ) : (
+                        <div className="product-grid">
+                            {filteredPiezas.map(pieza => (
+                                <ProductCard
+                                    key={pieza.Id_Pieza}
+                                    product={pieza}
+                                    onViewDetails={() => onViewProduct(pieza.Id_Pieza)}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
-            ) : (
-                <div className="product-grid">
-                    {piezas.map(pieza => (
-                        <ProductCard 
-                            key={pieza.Id_Pieza} 
-                            product={pieza}
-                            onViewDetails={() => onViewProduct(pieza.Id_Pieza)}
-                        />
-                    ))}
-                </div>
-            )}
+            </div>
         </div>
     );
 };

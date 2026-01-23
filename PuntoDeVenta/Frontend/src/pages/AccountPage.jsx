@@ -3,11 +3,25 @@ import { useAuth } from '../context/AuthContext';
 import './AccountPage.css';
 
 const AccountPage = () => {
-    const { user, logout, updateProfile, changePassword } = useAuth();
+    const { user, logout, updateProfile, changePassword, isAuthenticated } = useAuth();
     const [activeTab, setActiveTab] = useState('profile');
     const [isEditing, setIsEditing] = useState(false);
     const [showOrderDetails, setShowOrderDetails] = useState(null);
     const [showChangePassword, setShowChangePassword] = useState(false);
+
+    if (!isAuthenticated) {
+        return (
+            <div className="account-page">
+                <div className="account-header">
+                    <h1>Mi Cuenta</h1>
+                    <p>Inicia sesión para ver tu perfil y pedidos</p>
+                </div>
+                <div className="account-content" style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
+                    <p>Por favor inicia sesión para acceder a esta sección.</p>
+                </div>
+            </div>
+        );
+    }
 
     // Estados para edición de perfil
     const [editData, setEditData] = useState({
@@ -165,7 +179,7 @@ const AccountPage = () => {
 
                         <div className="info-card">
                             <h3>Información de Contacto</h3>
-                            
+
                             {error && <div className="error-message">⚠️ {error}</div>}
 
                             {isEditing ? (
@@ -284,7 +298,7 @@ const AccountPage = () => {
                                                 <span>{order.items.length} {order.items.length === 1 ? 'artículo' : 'artículos'}</span>
                                                 <span className="order-total">${order.total.toFixed(2)}</span>
                                             </div>
-                                            <button 
+                                            <button
                                                 className="view-order-btn"
                                                 onClick={() => setShowOrderDetails(order)}
                                             >
@@ -307,7 +321,7 @@ const AccountPage = () => {
                 {activeTab === 'settings' && (
                     <div className="settings-section">
                         <h2>Configuración</h2>
-                        
+
                         <div className="settings-card">
                             <h3>Notificaciones</h3>
                             <div className="setting-item">
@@ -344,13 +358,13 @@ const AccountPage = () => {
 
                         <div className="settings-card">
                             <h3>Seguridad</h3>
-                            <button 
+                            <button
                                 className="settings-btn"
                                 onClick={() => setShowChangePassword(true)}
                             >
                                 Cambiar Contraseña
                             </button>
-                            <button 
+                            <button
                                 className="settings-btn secondary"
                                 onClick={handleLogout}
                             >
@@ -367,7 +381,7 @@ const AccountPage = () => {
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
                             <h2>Detalles del Pedido #{showOrderDetails.id}</h2>
-                            <button 
+                            <button
                                 className="close-btn"
                                 onClick={() => setShowOrderDetails(null)}
                             >
@@ -387,7 +401,7 @@ const AccountPage = () => {
                                     </span>
                                 </div>
                             </div>
-                            
+
                             <h3>Productos</h3>
                             <div className="order-items">
                                 {showOrderDetails.items.map((item, index) => (
@@ -402,7 +416,7 @@ const AccountPage = () => {
                                     </div>
                                 ))}
                             </div>
-                            
+
                             <div className="order-total-line">
                                 <span>Total:</span>
                                 <span className="total-amount">${showOrderDetails.total.toFixed(2)}</span>
@@ -418,7 +432,7 @@ const AccountPage = () => {
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
                             <h2>Cambiar Contraseña</h2>
-                            <button 
+                            <button
                                 className="close-btn"
                                 onClick={() => {
                                     setShowChangePassword(false);
@@ -435,7 +449,7 @@ const AccountPage = () => {
                         </div>
                         <div className="modal-body">
                             {error && <div className="error-message">⚠️ {error}</div>}
-                            
+
                             <form onSubmit={handleSubmitPasswordChange}>
                                 <div className="form-group">
                                     <label>Contraseña Actual</label>
@@ -473,7 +487,7 @@ const AccountPage = () => {
                                     <button type="submit" className="save-btn">
                                         Cambiar Contraseña
                                     </button>
-                                    <button 
+                                    <button
                                         type="button"
                                         className="cancel-btn"
                                         onClick={() => {

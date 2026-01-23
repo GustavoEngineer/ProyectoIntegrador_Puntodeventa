@@ -3,15 +3,17 @@ import PropTypes from 'prop-types';
 import Header from './Header';
 import './MainLayout.css';
 
-const MainLayout = ({ children, onViewCart, onViewCategories, onViewAccount, onViewCatalog, currentView }) => {
+const MainLayout = ({ children, onViewCart, onViewCategories, onViewAccount, onViewCatalog, currentView, onSearch, searchQuery }) => {
     return (
         <div className="main-layout">
-            <Header 
+            <Header
                 onViewCart={onViewCart}
                 onViewCategories={onViewCategories}
                 onViewAccount={onViewAccount}
                 onViewCatalog={onViewCatalog}
                 currentView={currentView}
+                onSearch={onSearch}
+                searchQuery={searchQuery}
             />
             <main className="main-content">
                 {children}

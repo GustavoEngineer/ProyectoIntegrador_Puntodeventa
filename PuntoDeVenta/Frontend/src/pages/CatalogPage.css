@@ -1,19 +1,34 @@
+.catalog-layout {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+.catalog-sidebar-wrapper {
+    width: 250px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 6rem;
+    /* Adjust based on header height, assumes sticky header */
+}
+
+.catalog-content {
+    flex: 1;
+}
+
 .catalog-header {
-    margin-bottom: 3rem;
-    text-align: center;
+    margin-bottom: 2rem;
+    text-align: left;
 }
 
 .catalog-title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--primary);
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.02em;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
 }
 
 .catalog-subtitle {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
+    display: none;
 }
 
 .catalog-loading,
@@ -45,17 +60,24 @@
 
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+    /* Tighter gap as usually sidebar takes space */
 }
 
-@media (max-width: 640px) {
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 1.5rem;
+@media (max-width: 768px) {
+    .catalog-layout {
+        flex-direction: column;
+        gap: 2rem;
     }
 
-    .catalog-title {
-        font-size: 2rem;
+    .catalog-sidebar-wrapper {
+        width: 100%;
+        position: static;
+        top: 0;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     }
 }

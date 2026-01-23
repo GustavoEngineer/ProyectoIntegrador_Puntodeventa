@@ -64,10 +64,38 @@ const deleteUsuario = async (req, res, next) => {
     }
 };
 
+const login = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email and password are required' });
+        }
+
+        const usuario = await Usuario.getByEmail(email);
+
+        if (!usuario) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        // WARNING: In a production environment, you must use hashing (bcrypt, etc.)
+        // This compares plain text as requested for this integration level
+        if (usuario.Contraseña !== password) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        // Return user data (excluding sensitive info if possible, but keeping it simple for now)
+        res.json(usuario);
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getAllUsuarios,
     getUsuarioById,
     createUsuario,
     updateUsuario,
-    deleteUsuario
+    deleteUsuario,
+    login
 };
