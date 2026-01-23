@@ -61,9 +61,8 @@ export const AuthProvider = ({ children }) => {
         Correo: userData.email,
         Contraseña: userData.password,
         Nombre: userData.name,
-        // Asumiendo que name puede tener apellidos, los separamos simple o enviamos string vacío
-        A_Paterno: '',
-        A_Materno: '',
+        A_Paterno: userData.paternalSurname || '',
+        A_Materno: userData.maternalSurname || '',
         Telefono: userData.phone || '',
         Id_TipoUsuario: 2 // Por defecto Cliente
       };

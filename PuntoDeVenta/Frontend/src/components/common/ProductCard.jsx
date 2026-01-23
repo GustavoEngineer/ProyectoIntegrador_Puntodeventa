@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import Button from './Button';
 import './ProductCard.css';
 
-const ProductCard = ({ product, onViewDetails }) => {
+const ProductCard = ({ product, onViewDetails, onRequireLogin }) => {
     const { addToCart } = useCart();
+    const { isAuthenticated } = useAuth();
 
     const {
         Id_Pieza,
@@ -19,15 +21,28 @@ const ProductCard = ({ product, onViewDetails }) => {
 
     const handleAddToCart = (e) => {
         e.stopPropagation();
+        if (!isAuthenticated) {
+            onRequireLogin();
+            return;
+        }
         addToCart(product);
         alert(`${Nombre} agregado al carrito`);
+    };
+
+    const handleWishlist = (e) => {
+        e.stopPropagation();
+        if (!isAuthenticated) {
+            onRequireLogin();
+            return;
+        }
+        alert('Funcionalidad de lista de deseos próximamente');
     };
 
     return (
         <div className="card-container" onClick={onViewDetails} style={{ cursor: 'pointer' }}>
             <div className="card-image-wrap">
                 <img src={imageUrl} alt={Nombre} className="card-image" loading="lazy" />
-                <button className="card-wishlist-btn">
+                <button className="card-wishlist-btn" onClick={handleWishlist}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                     </svg>

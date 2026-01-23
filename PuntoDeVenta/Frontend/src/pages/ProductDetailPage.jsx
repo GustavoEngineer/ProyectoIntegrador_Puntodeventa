@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { apiCall } from '../utils/api';
 import './ProductDetailPage.css';
 
-const ProductDetailPage = ({ productId, onBack }) => {
+const ProductDetailPage = ({ productId, onBack, onRequireLogin }) => {
     const [pieza, setPieza] = useState(null);
     const [loading, setLoading] = useState(true);
     const [cantidad, setCantidad] = useState(1);
     const [activeTab, setActiveTab] = useState('description');
     const { addToCart } = useCart();
+    const { isAuthenticated } = useAuth();
 
     useEffect(() => {
         fetchPieza();
@@ -27,10 +29,23 @@ const ProductDetailPage = ({ productId, onBack }) => {
     };
 
     const handleAddToCart = () => {
+        if (!isAuthenticated) {
+            onRequireLogin();
+            return;
+        }
+
         if (pieza && cantidad > 0) {
             addToCart(pieza, cantidad);
             alert(`${cantidad} unidad(es) agregadas al carrito`);
         }
+    };
+
+    const handleWishlist = () => {
+        if (!isAuthenticated) {
+            onRequireLogin();
+            return;
+        }
+        alert('Funcionalidad de lista de deseos próximamente');
     };
 
     if (loading) return <div className="product-detail-loading">Cargando...</div>;
@@ -41,9 +56,7 @@ const ProductDetailPage = ({ productId, onBack }) => {
 
     return (
         <div className="product-detail-wrapper">
-            <button onClick={onBack} className="back-btn-floating">
-                ← Volver
-            </button>
+
 
             <div className="product-layout">
                 {/* Left Column: Image */}
@@ -127,7 +140,7 @@ const ProductDetailPage = ({ productId, onBack }) => {
 
                     {/* Action Buttons */}
                     <div className="action-buttons">
-                        <button className="wishlist-btn">
+                        <button className="wishlist-btn" onClick={handleWishlist}>
                             ADD TO MY WISHLIST
                         </button>
                         <button

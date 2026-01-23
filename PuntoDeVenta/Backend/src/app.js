@@ -28,6 +28,7 @@ const detalleOrdenRoutes = require('./routes/detalleOrdenRoutes');
 const atributosAdicionalesRoutes = require('./routes/atributosAdicionalesRoutes');
 const piezaEquipoRoutes = require('./routes/piezaEquipoRoutes');
 const valorAtributoRoutes = require('./routes/valorAtributoRoutes');
+const listaDeseosRoutes = require('./routes/listaDeseosRoutes');
 
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/piezas', piezaRoutes);
@@ -42,6 +43,7 @@ app.use('/api/detalles-orden', detalleOrdenRoutes);
 app.use('/api/atributos-adicionales', atributosAdicionalesRoutes);
 app.use('/api/pieza-equipo', piezaEquipoRoutes);
 app.use('/api/valor-atributo', valorAtributoRoutes);
+app.use('/api/lista-deseos', listaDeseosRoutes);
 
 
 // Error handling middleware

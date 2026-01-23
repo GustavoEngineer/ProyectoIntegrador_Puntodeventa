@@ -46,25 +46,41 @@ const Header = ({ onViewCart, onViewCategories, onViewAccount, onViewCatalog, cu
                             onChange={(e) => onSearch && onSearch(e.target.value)}
                         />
                     </div>
+
                 </div>
 
                 <div className="header-center">
-                    {/* Search is now in header-left expanding towards center as per request layout */}
-                </div>
+                    <button className="nav-home-btn" onClick={onViewCatalog} title="Ir al inicio">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        <span>Home</span>
+                    </button>
 
-                <div className="header-right">
-                    {/* Cart Icon with Text */}
                     <button className="cart-icon-btn" onClick={onViewCart}>
                         <div className="cart-icon-wrapper">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <circle cx="9" cy="21" r="1"></circle>
                                 <circle cx="20" cy="21" r="1"></circle>
                                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                             </svg>
                             {cartCount > 0 && <span className="cart-badge-dot"></span>}
                         </div>
-                        <span className="cart-text">Tu carrito</span>
+                        <span className="cart-text">Carrito</span>
                     </button>
+
+                    <button className="favoritos-btn" title="Favoritos">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                        <span className="favoritos-text">Favoritos</span>
+                    </button>
+
+
+                </div>
+
+                <div className="header-right">
 
                     {/* Profile Avatar */}
                     {isAuthenticated ? (

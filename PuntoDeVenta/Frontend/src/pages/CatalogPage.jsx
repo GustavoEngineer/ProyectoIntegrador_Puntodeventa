@@ -4,7 +4,7 @@ import ProductCard from '../components/common/ProductCard';
 import CategorySidebar from '../components/common/CategorySidebar';
 import './CatalogPage.css';
 
-const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCategory }) => {
+const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCategory, ...props }) => {
     const [piezas, setPiezas] = useState([]);
     const [filteredPiezas, setFilteredPiezas] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -103,6 +103,7 @@ const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCat
                                     key={pieza.Id_Pieza}
                                     product={pieza}
                                     onViewDetails={() => onViewProduct(pieza.Id_Pieza)}
+                                    onRequireLogin={props.onRequireLogin}
                                 />
                             ))}
                         </div>

@@ -18,9 +18,7 @@ const MainLayout = ({ children, onViewCart, onViewCategories, onViewAccount, onV
             <main className="main-content">
                 {children}
             </main>
-            <footer className="footer">
-                <p>&copy; 2024 MediParts. Plataforma de ingenieros biomédicos.</p>
-            </footer>
+
         </div>
     );
 };

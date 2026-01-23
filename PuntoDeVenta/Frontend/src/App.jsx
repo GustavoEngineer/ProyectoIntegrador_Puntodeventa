@@ -22,7 +22,16 @@ function App() {
     setCurrentView('product');
   };
 
+  const handleRequireAuth = () => {
+    // Optional: save return path if needed
+    handleSwitchToLogin();
+  };
+
   const handleViewCart = () => {
+    if (!isAuthenticated) {
+      handleRequireAuth();
+      return;
+    }
     setCurrentView('cart');
   };
 
@@ -31,6 +40,10 @@ function App() {
   };
 
   const handleViewAccount = () => {
+    if (!isAuthenticated) {
+      handleRequireAuth();
+      return;
+    }
     setCurrentView('account');
   };
 
@@ -97,9 +110,10 @@ function App() {
           selectedCategory={selectedCategory}
           searchQuery={searchQuery}
           onSelectCategory={handleBackToCatalog}
+          onRequireLogin={handleRequireAuth}
         />
       )}
-      {currentView === 'product' && <ProductDetailPage key={selectedProductId} productId={selectedProductId} onBack={handleBackToCatalog} />}
+      {currentView === 'product' && <ProductDetailPage key={selectedProductId} productId={selectedProductId} onBack={handleBackToCatalog} onRequireLogin={handleRequireAuth} />}
       {currentView === 'cart' && <CartPage key="cart" onBack={handleBackToCatalog} />}
       {currentView === 'categories' && <CategoriesPage key="categories" onSelectCategory={handleBackToCatalog} />}
       {currentView === 'account' && <AccountPage key="account" />}

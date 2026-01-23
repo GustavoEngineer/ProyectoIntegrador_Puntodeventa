@@ -22,9 +22,11 @@
 .header-left {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
     flex: 1;
-    /* Let search expand */
+    justify-content: flex-start;
+    position: relative;
+    z-index: 10;
 }
 
 /* Search Container Styles */
@@ -36,8 +38,8 @@
     border-radius: 9999px;
     /* Pill shape */
     flex: 1;
-    max-width: 400px;
-    /* Limit width */
+    width: 100%;
+    max-width: 100%;
     position: relative;
     border: 1px solid transparent;
     transition: all 0.2s ease;
@@ -75,34 +77,78 @@
 }
 
 /* Header Right */
+/* Header Right */
 .header-right {
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    flex: 1;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 20;
 }
 
-/* Cart Icon Button */
-.cart-icon-btn {
+.header-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 10;
+}
+
+/* Unified Navigation Buttons (Home, Cart, Wishlist) */
+.nav-home-btn,
+.cart-icon-btn,
+.favoritos-btn {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     background: transparent;
-    border: none;
+    border: none !important;
+    outline: none !important;
     cursor: pointer;
-    padding: 0.5rem;
+    padding: 0.4rem 0.6rem;
     border-radius: 8px;
-    transition: all 0.2s;
     color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+    font-weight: 400;
+    font-size: 0.85rem;
+    text-transform: none !important;
+    letter-spacing: normal;
+    line-height: 1.5;
+    transition: all 0.2s;
+    margin-right: 0.25rem;
+    height: auto;
+    width: auto;
+    box-shadow: none !important;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
-.cart-icon-btn:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+.nav-home-btn:hover,
+.cart-icon-btn:hover,
+.favoritos-btn:hover {
+    background-color: var(--background-secondary, #f3f4f6);
+    color: var(--primary);
 }
 
-[data-theme="dark"] .cart-icon-btn:hover {
+[data-theme="dark"] .nav-home-btn:hover,
+[data-theme="dark"] .cart-icon-btn:hover,
+[data-theme="dark"] .favoritos-btn:hover {
     background-color: rgba(255, 255, 255, 0.05);
 }
 
+/* Ensure icons are consistent */
+.nav-home-btn svg,
+.cart-icon-btn svg,
+.favoritos-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Wrapper for badges remains specific but contained */
 .cart-icon-wrapper {
     position: relative;
     display: flex;
@@ -117,46 +163,63 @@
     width: 8px;
     height: 8px;
     background-color: #ef4444;
-    /* Red dot */
     border-radius: 50%;
     border: 2px solid var(--background);
 }
 
-.cart-text {
-    font-size: 0.9rem;
-    font-weight: 500;
+/* Remove direct text styling since parent handles it now */
+.cart-text,
+.favoritos-text {
+    font-size: inherit;
+    font-weight: inherit;
 }
 
-/* User Avatar */
+/* Profile Avatar Styles */
 .user-avatar-circle {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--background-secondary, #f9fafb);
-    color: var(--text-secondary);
-}
-
-[data-theme="dark"] .user-avatar-circle {
-    background-color: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: #f3f4f6;
+    color: var(--text-primary);
+    border: 1px solid transparent;
 }
 
 .user-avatar-circle:hover {
-    border-color: var(--primary);
-    color: var(--primary);
+    transform: scale(1.05);
 }
 
 .user-avatar-circle.logged-in {
-    background-color: var(--primary);
-    border-color: var(--primary);
+    background-color: #8b5cf6;
+    /* Purple */
     color: white;
+    border: none;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(139, 92, 246, 0.3);
+}
+
+.user-avatar-circle.logged-in:hover {
+    background-color: #7c3aed;
+    /* Darker purple on hover */
+    box-shadow: 0 4px 8px rgba(139, 92, 246, 0.4);
 }
 
 .user-avatar-circle.guest {
-    /* Style specifically for guest icon if needed, inherit default fine */
+    background-color: transparent;
+    border: 1px solid var(--border, #e5e7eb);
+    color: var(--text-primary);
+}
+
+.user-avatar-circle.guest:hover {
+    background-color: var(--background-secondary, #f3f4f6);
+    border-color: var(--text-secondary);
+}
+
+.avatar-initial {
+    font-size: 1rem;
+    line-height: 1;
 }

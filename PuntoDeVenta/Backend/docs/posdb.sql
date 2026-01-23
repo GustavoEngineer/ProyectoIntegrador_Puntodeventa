@@ -14,7 +14,7 @@ CREATE TABLE "Usuario" (
   "A_Materno" TEXT,
   "Telefono" TEXT,
   "Id_TipoUsuario" INTEGER NOT NULL,
-  FOREIGN KEY ("Id_TipoUsuario") REFERENCES "TipoUsuario"("Id_TipoUsuario") ON DELETE RESTRICT
+  CONSTRAINT fk_tipousuario FOREIGN KEY ("Id_TipoUsuario") REFERENCES "TipoUsuario"("Id_TipoUsuario") ON DELETE RESTRICT
 );
 
 -- 3. CategoriaPieza
@@ -52,9 +52,9 @@ CREATE TABLE "Pieza" (
   "Id_CategoriaPieza" INTEGER NOT NULL,
   "Id_EstadoPieza" INTEGER NOT NULL,
   "Id_TipoPieza" INTEGER NOT NULL,
-  FOREIGN KEY ("Id_CategoriaPieza") REFERENCES "CategoriaPieza"("Id_CategoriaPieza") ON DELETE RESTRICT,
-  FOREIGN KEY ("Id_EstadoPieza") REFERENCES "EstadoPieza"("Id_EstadoPieza") ON DELETE RESTRICT,
-  FOREIGN KEY ("Id_TipoPieza") REFERENCES "TipoPieza"("Id_TipoPieza") ON DELETE RESTRICT
+  CONSTRAINT fk_categoria FOREIGN KEY ("Id_CategoriaPieza") REFERENCES "CategoriaPieza"("Id_CategoriaPieza") ON DELETE RESTRICT,
+  CONSTRAINT fk_estado FOREIGN KEY ("Id_EstadoPieza") REFERENCES "EstadoPieza"("Id_EstadoPieza") ON DELETE RESTRICT,
+  CONSTRAINT fk_tipo FOREIGN KEY ("Id_TipoPieza") REFERENCES "TipoPieza"("Id_TipoPieza") ON DELETE RESTRICT
 );
 
 -- 8. Pieza_Equipo (relación muchos a muchos)
@@ -62,8 +62,8 @@ CREATE TABLE "Pieza_Equipo" (
   "Id_Pieza" INTEGER,
   "Id_EquipoCompatible" INTEGER,
   PRIMARY KEY ("Id_Pieza", "Id_EquipoCompatible"),
-  FOREIGN KEY ("Id_Pieza") REFERENCES "Pieza"("Id_Pieza") ON DELETE CASCADE,
-  FOREIGN KEY ("Id_EquipoCompatible") REFERENCES "EquiposCompatibles"("Id_EquipoCompatible") ON DELETE CASCADE
+  CONSTRAINT fk_pieza_eq FOREIGN KEY ("Id_Pieza") REFERENCES "Pieza"("Id_Pieza") ON DELETE CASCADE,
+  CONSTRAINT fk_equipo_eq FOREIGN KEY ("Id_EquipoCompatible") REFERENCES "EquiposCompatibles"("Id_EquipoCompatible") ON DELETE CASCADE
 );
 
 -- 9. EstadoOrden
@@ -75,12 +75,12 @@ CREATE TABLE "EstadoOrden" (
 -- 10. Orden
 CREATE TABLE "Orden" (
   "Id_Orden" SERIAL PRIMARY KEY,
-  "Fecha" TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  "Fecha" TIMESTAMPTZ DEFAULT NOW(),
   "Total" NUMERIC(12,2) NOT NULL,
   "Id_Usuario" INTEGER NOT NULL,
   "Id_EstadoOrden" INTEGER NOT NULL,
-  FOREIGN KEY ("Id_Usuario") REFERENCES "Usuario"("Id_Usuario") ON DELETE RESTRICT,
-  FOREIGN KEY ("Id_EstadoOrden") REFERENCES "EstadoOrden"("Id_EstadoOrden") ON DELETE RESTRICT
+  CONSTRAINT fk_usuario_orden FOREIGN KEY ("Id_Usuario") REFERENCES "Usuario"("Id_Usuario") ON DELETE RESTRICT,
+  CONSTRAINT fk_estado_orden FOREIGN KEY ("Id_EstadoOrden") REFERENCES "EstadoOrden"("Id_EstadoOrden") ON DELETE RESTRICT
 );
 
 -- 11. DetalleOrden
@@ -90,8 +90,8 @@ CREATE TABLE "DetalleOrden" (
   "PrecioUnitario" NUMERIC(10,2) NOT NULL,
   "Id_Orden" INTEGER NOT NULL,
   "Id_Pieza" INTEGER NOT NULL,
-  FOREIGN KEY ("Id_Orden") REFERENCES "Orden"("Id_Orden") ON DELETE CASCADE,
-  FOREIGN KEY ("Id_Pieza") REFERENCES "Pieza"("Id_Pieza") ON DELETE RESTRICT
+  CONSTRAINT fk_orden_det FOREIGN KEY ("Id_Orden") REFERENCES "Orden"("Id_Orden") ON DELETE CASCADE,
+  CONSTRAINT fk_pieza_det FOREIGN KEY ("Id_Pieza") REFERENCES "Pieza"("Id_Pieza") ON DELETE RESTRICT
 );
 
 -- 12. AtributosAdicionales
@@ -106,6 +106,16 @@ CREATE TABLE "ValorAtributo" (
   "Id_Atributo" INTEGER,
   "Valor" TEXT NOT NULL,
   PRIMARY KEY ("Id_Pieza", "Id_Atributo"),
-  FOREIGN KEY ("Id_Pieza") REFERENCES "Pieza"("Id_Pieza") ON DELETE CASCADE,
-  FOREIGN KEY ("Id_Atributo") REFERENCES "AtributosAdicionales"("Id_Atributo") ON DELETE CASCADE
+  CONSTRAINT fk_pieza_val FOREIGN KEY ("Id_Pieza") REFERENCES "Pieza"("Id_Pieza") ON DELETE CASCADE,
+  CONSTRAINT fk_atributo_val FOREIGN KEY ("Id_Atributo") REFERENCES "AtributosAdicionales"("Id_Atributo") ON DELETE CASCADE
+);
+
+-- 14. ListaDeseos (NUEVA TABLA)
+CREATE TABLE "ListaDeseos" (
+  "Id_Usuario" INTEGER NOT NULL,
+  "Id_Pieza" INTEGER NOT NULL,
+  "FechaAgregado" TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY ("Id_Usuario", "Id_Pieza"),
+  CONSTRAINT fk_usuario_wish FOREIGN KEY ("Id_Usuario") REFERENCES "Usuario"("Id_Usuario") ON DELETE CASCADE,
+  CONSTRAINT fk_pieza_wish FOREIGN KEY ("Id_Pieza") REFERENCES "Pieza"("Id_Pieza") ON DELETE CASCADE
 );
