@@ -45,3 +45,15 @@
     background-color: var(--primary);
     color: white;
 }
+
+.btn-danger {
+    background: white;
+    border: 2px solid var(--danger);
+    color: var(--danger);
+    font-weight: 700;
+}
+
+.btn-danger:hover {
+    background-color: var(--danger);
+    color: white;
+}

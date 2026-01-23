@@ -16,6 +16,33 @@
     font-size: 1.1rem;
 }
 
+.catalog-loading,
+.catalog-error,
+.catalog-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-secondary);
+}
+
+.catalog-error {
+    color: #dc2626;
+}
+
+.catalog-error button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.catalog-error button:hover {
+    opacity: 0.9;
+}
+
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

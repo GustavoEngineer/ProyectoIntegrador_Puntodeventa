@@ -1,34 +1,93 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductCard from '../components/common/ProductCard';
 import './CatalogPage.css';
 
-// Dummy Data
-const DUMMY_PRODUCTS = [
-    { id: 1, title: 'Minimalist Watch', price: 129.99, image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80', category: 'Accessories' },
-    { id: 2, title: 'Premium Leather Bag', price: 249.50, image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=500&q=80', category: 'Accessories' },
-    { id: 3, title: 'Wireless Headphones', price: 199.00, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80', category: 'Electronics' },
-    { id: 4, title: 'Designer Sunglasses', price: 159.00, image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=500&q=80', category: 'Accessories' },
-    { id: 5, title: 'Smart Speaker', price: 89.99, image: 'https://images.unsplash.com/photo-1589492477829-5e65395b66cc?auto=format&fit=crop&w=500&q=80', category: 'Electronics' },
-    { id: 6, title: 'Running Shoes', price: 119.95, image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80', category: 'Footwear' },
-    { id: 7, title: 'Classic Denim Jacket', price: 79.99, image: 'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?auto=format&fit=crop&w=500&q=80', category: 'Apparel' },
-    { id: 8, title: 'Modern Plant Pot', price: 35.00, image: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=500&q=80', category: 'Home' },
-];
+const API_URL = 'http://localhost:3000/api';
 
-const CatalogPage = () => {
-    const [products] = useState(DUMMY_PRODUCTS);
+const CatalogPage = ({ onViewProduct, selectedCategory }) => {
+    const [piezas, setPiezas] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [retryCount, setRetryCount] = useState(0);
+
+    useEffect(() => {
+        fetchPiezas();
+    }, [selectedCategory, retryCount]);
+
+    const fetchPiezas = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const response = await fetch(`${API_URL}/piezas`);
+            if (!response.ok) {
+                throw new Error('Error al cargar las piezas');
+            }
+            let data = await response.json();
+            
+            // Filtrar por categoría si está seleccionada
+            if (selectedCategory) {
+                data = data.filter(pieza => pieza.Id_CategoriaPieza === selectedCategory);
+            }
+            
+            setPiezas(data);
+        } catch (err) {
+            setError(err.message);
+            console.error('Error fetching piezas:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleRetry = () => {
+        setRetryCount(prev => prev + 1);
+    };
+
+    if (loading) {
+        return (
+            <div className="catalog-page">
+                <div className="catalog-loading">Cargando piezas médicas...</div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="catalog-page">
+                <div className="catalog-error">
+                    <p>Error: {error}</p>
+                    <button onClick={handleRetry}>Reintentar</button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="catalog-page">
             <div className="catalog-header">
-                <h2 className="catalog-title">Featured Collection</h2>
-                <p className="catalog-subtitle">Discover our hand-picked items for this season.</p>
+                <h2 className="catalog-title">Piezas de Equipos Médicos</h2>
+                <p className="catalog-subtitle">
+                    Piezas excedentes de ingenieros de mantenimiento. Calidad garantizada.
+                </p>
             </div>
 
-            <div className="product-grid">
-                {products.map(product => (
-                    <ProductCard key={product.id} product={product} />
-                ))}
-            </div>
+            {piezas.length === 0 && !loading ? (
+                <div className="catalog-empty">
+                    <p>No hay piezas disponibles en este momento.</p>
+                    <button onClick={handleRetry} style={{ marginTop: '1rem', padding: '0.5rem 1rem', cursor: 'pointer' }}>
+                        Recargar
+                    </button>
+                </div>
+            ) : (
+                <div className="product-grid">
+                    {piezas.map(pieza => (
+                        <ProductCard 
+                            key={pieza.Id_Pieza} 
+                            product={pieza}
+                            onViewDetails={() => onViewProduct(pieza.Id_Pieza)}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
