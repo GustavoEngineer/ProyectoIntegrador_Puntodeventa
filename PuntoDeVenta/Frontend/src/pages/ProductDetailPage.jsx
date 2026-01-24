@@ -8,7 +8,7 @@ const ProductDetailPage = ({ productId, onBack, onRequireLogin }) => {
     const [pieza, setPieza] = useState(null);
     const [loading, setLoading] = useState(true);
     const [cantidad, setCantidad] = useState(1);
-    const [activeTab, setActiveTab] = useState('description');
+    const [activeTab, setActiveTab] = useState('details');
     const { addToCart } = useCart();
     const { isAuthenticated } = useAuth();
 
@@ -56,101 +56,85 @@ const ProductDetailPage = ({ productId, onBack, onRequireLogin }) => {
 
     return (
         <div className="product-detail-wrapper">
-
-
-            <div className="product-layout">
-                {/* Left Column: Image */}
-                <div className="product-gallery">
-                    <div className="main-image-container">
-                        <img src={imageUrl} alt={pieza.Nombre} className="main-image" />
-                        <div className="gallery-dots">
-                            <span className="dot active"></span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Right Column: Info */}
-                <div className="product-info-panel">
-                    <div className="product-header">
-                        <span className="category-label">{pieza.Categoria || 'MEDICAL'}</span>
-                        <h1 className="product-title">{pieza.Nombre}</h1>
-                        <p className="vendor-name">Equipos Médicos S.A.</p>
-
-                        <div className="price-rating-row">
-                            <span className="product-price">${parseFloat(pieza.Precio).toFixed(2)}</span>
+            <div className="product-content-upper">
+                <div className="product-layout">
+                    {/* Left Column: Image */}
+                    <div className="product-gallery">
+                        <div className="main-image-container">
+                            <img src={imageUrl} alt={pieza.Nombre} className="main-image" />
+                            <div className="gallery-dots">
+                                <span className="dot active"></span>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="product-tabs">
-                        <div className="tabs-header">
-                            <button
-                                className={`tab-btn ${activeTab === 'description' ? 'active' : ''}`}
-                                onClick={() => setActiveTab('description')}
-                            >
-                                DESCRIPTION
-                            </button>
-                            <button
-                                className={`tab-btn ${activeTab === 'details' ? 'active' : ''}`}
-                                onClick={() => setActiveTab('details')}
-                            >
-                                DETAILS
-                            </button>
-                        </div>
-                        <div className="tab-content">
-                            {activeTab === 'description' && (
-                                <p className="description-text">
-                                    {pieza.Descripcion || "Sin descripción disponible para esta pieza."}
-                                    <br /><br />
-                                    Esta pieza proviene de excedentes de mantenimiento biomédico, garantizando funcionalidad y calidad original.
-                                </p>
-                            )}
-                            {activeTab === 'details' && (
+                    {/* Right Column: Info */}
+                    <div className="product-info-panel">
+                        <div className="product-header">
+                            <span className="category-label">{pieza.Categoria || 'MEDICAL'}</span>
+                            <div className="title-row">
+                                <div className="title-group">
+                                    <h1 className="product-title">{pieza.Nombre}</h1>
+                                    <button className="wishlist-icon-btn" onClick={handleWishlist} aria-label="Add to wishlist">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                {/* Static Stars */}
+                                <div className="product-rating">
+                                    ★★★★★ <span style={{ color: '#6b7280', fontSize: '1rem', marginLeft: '0.25rem' }}>5.0</span>
+                                </div>
+                            </div>
+
+                            <div className="price-row">
+                                <span className="product-price">${parseFloat(pieza.Precio).toFixed(2)}</span>
+                            </div>
+
+                            {/* Details Middle Section */}
+                            <div className="product-description-middle">
                                 <ul className="details-list">
                                     <li><strong>Estado:</strong> {pieza.Estado}</li>
                                     <li><strong>Tipo:</strong> {pieza.Tipo}</li>
                                     <li><strong>Garantía:</strong> {pieza.Garantia} meses</li>
-                                    <li><strong>Stock:</strong> {pieza.Cantidad} unidades</li>
+                                    <li><strong>Vendor:</strong> Equipos Médicos S.A.</li>
                                 </ul>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Controls Row */}
-                    <div className="product-controls">
-                        <div className="control-group">
-                            <label>QUANTITY</label>
-                            <div className="quantity-pill">
-                                <button
-                                    onClick={() => setCantidad(Math.max(1, cantidad - 1))}
-                                    disabled={cantidad <= 1}
-                                >-</button>
-                                <span>{cantidad}</span>
-                                <button
-                                    onClick={() => setCantidad(Math.min(pieza.Cantidad, cantidad + 1))}
-                                    disabled={cantidad >= pieza.Cantidad}
-                                >+</button>
                             </div>
-                        </div>
 
-                        <div className="control-group total-group">
-                            <label>TOTAL PRICE</label>
-                            <span className="total-price-display">${totalPrice}</span>
+                            {/* Action Buttons */}
+                            <div className="action-buttons">
+                                <button
+                                    className="buy-now-btn"
+                                    onClick={() => handleAddToCart()}
+                                    disabled={pieza.Cantidad === 0}
+                                >
+                                    BUY IT NOW
+                                </button>
+                                <button
+                                    className="add-to-cart-btn"
+                                    onClick={handleAddToCart}
+                                    disabled={pieza.Cantidad === 0}
+                                >
+                                    {pieza.Cantidad === 0 ? 'AGOTADO' : 'ADD TO CART'}
+                                </button>
+                            </div>
+
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    {/* Action Buttons */}
-                    <div className="action-buttons">
-                        <button className="wishlist-btn" onClick={handleWishlist}>
-                            ADD TO MY WISHLIST
-                        </button>
-                        <button
-                            className="add-to-cart-btn"
-                            onClick={handleAddToCart}
-                            disabled={pieza.Cantidad === 0}
-                        >
-                            {pieza.Cantidad === 0 ? 'AGOTADO' : 'ADD TO CART'}
-                        </button>
-                    </div>
+            {/* Description Bottom Section - Full Width Below Image */}
+            <div className="product-description-bottom">
+                <span className="description-label">DESCRIPTION</span>
+                <div className="description-content">
+                    <p style={{ marginBottom: '1rem' }}>
+                        {pieza.Descripcion || "Sin descripción disponible para esta pieza."}
+                    </p>
+                    <p>
+                        Esta pieza proviene de excedentes de mantenimiento biomédico, garantizando funcionalidad y calidad original.
+                        Ideal para reparaciones o proyectos académicos.
+                    </p>
                 </div>
             </div>
         </div>

@@ -1,14 +1,23 @@
 .product-detail-wrapper {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 2rem 2rem 2rem;
+    max-width: 100%;
+    margin: 0;
+    padding: 0 2rem 2rem 0;
+    /* Left padding 0 */
     position: relative;
     color: #1f2937;
-    height: calc(100vh - 100px);
-    /* Adjust based on header height around 60-80px */
+    width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-bottom: 4rem;
+    /* Ensure bottom space */
+}
+
+.product-content-upper {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 2rem;
 }
 
 .back-btn-floating {
@@ -33,10 +42,12 @@
 
 .product-layout {
     display: grid;
-    grid-template-columns: 45% 1fr;
+    grid-template-columns: auto 1fr;
+    /* Let image define width, info takes rest */
     gap: 2rem;
     margin-top: 0;
-    align-items: center;
+    align-items: flex-start;
+    /* Align to top as requested */
     width: 100%;
 }
 
@@ -45,12 +56,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-top: 2rem;
 }
 
 .main-image-container {
     width: 100%;
+    max-width: 450px;
+    /* Limit size */
     aspect-ratio: 1 / 1;
-    margin: 0 auto;
+    margin: 0;
+    /* Align left */
     background: #f9fafb;
     /* Light gray background like reference chair */
     border-radius: 1rem;
@@ -67,7 +82,8 @@
     height: 100%;
     object-fit: cover;
     mix-blend-mode: multiply;
-    /* Helps if image has white bg */
+    border-radius: 1.5rem;
+    /* Runded corners for image */
 }
 
 .gallery-dots {
@@ -94,12 +110,12 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding-top: 0;
+    padding-top: 2.5rem;
 }
 
 .category-label {
-    color: #fbbf24;
-    /* Yellow category */
+    color: #9ca3af;
+    /* Gray category */
     font-weight: 700;
     text-transform: uppercase;
     font-size: 0.85rem;
@@ -109,12 +125,50 @@
 }
 
 .product-title {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 2.5rem;
+    font-weight: 400;
     color: #111827;
-    margin: 0 0 0.5rem 0;
+    margin: 0;
+    /* Remove bottom margin as it handled by row */
     line-height: 1.2;
 }
+
+.title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.product-rating {
+    color: #fbbf24;
+    font-size: 1.2rem;
+}
+
+.title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.wishlist-icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #4b5563;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.wishlist-icon-btn:hover {
+    color: #ef4444;
+    /* Red heart on hover */
+}
+
 
 .vendor-name {
     color: #9ca3af;
@@ -123,30 +177,103 @@
     font-size: 1rem;
 }
 
-.price-rating-row {
+/* Prices */
+.price-row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-top: 1.5rem;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    /* Divider line */
+    padding-bottom: 1.5rem;
+    /* Space between price and line */
+    width: 100%;
+    /* Ensure line spans full width */
 }
 
 .product-price {
-    font-size: 1.75rem;
+    font-size: 2.5rem;
     font-weight: 700;
-    color: #111827;
+    color: #1f2937;
 }
 
-.rating-stars {
-    color: #d1d5db;
-    /* Gray stars by default */
-    letter-spacing: 2px;
-}
-
-/* Tabs */
-.product-tabs {
+.product-description-middle {
+    margin-top: 2.5rem;
+    margin-bottom: 3rem;
+    padding-bottom: 2.5rem;
     border-bottom: 1px solid #e5e7eb;
-    padding-bottom: 1rem;
+    /* Second divider line */
+    color: #6b7280;
+    line-height: 1.6;
+    font-size: 0.95rem;
 }
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
+    max-width: 400px;
+    /* Limit button width */
+}
+
+.buy-now-btn {
+    flex: 1;
+    padding: 1rem;
+    background: #111827;
+    color: white;
+    font-weight: 700;
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.2s;
+}
+
+.buy-now-btn:hover {
+    background: #000;
+}
+
+.add-to-cart-btn {
+    flex: 1;
+    padding: 1rem;
+    background: white;
+    color: #111827;
+    border: 1px solid #e5e7eb;
+    font-weight: 700;
+    border-radius: 2rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.add-to-cart-btn:hover:not(:disabled) {
+    border-color: #111827;
+    transform: none;
+    box-shadow: none;
+}
+
+.add-to-cart-btn:disabled {
+    background-color: #d1d5db;
+    cursor: not-allowed;
+}
+
+/* Lower Section Tabs */
+.product-lower-section {
+    width: 100%;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 2rem;
+    margin-top: auto;
+    padding-left: 0;
+    /* Align with image */
+    padding-right: 2rem;
+    /* Keep right padding */
+    padding-bottom: 4rem;
+    /* Add bottom spacing */
+}
+
+
 
 .tabs-header {
     display: flex;
@@ -189,6 +316,9 @@
 }
 
 .details-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
     list-style: none;
     padding: 0;
     color: #6b7280;
@@ -196,137 +326,7 @@
 }
 
 .details-list li {
-    margin-bottom: 0.5rem;
-}
-
-/* Controls */
-.product-controls {
-    display: grid;
-    grid-template-columns: auto auto 1fr;
-    gap: 2rem;
-    align-items: end;
-}
-
-.control-group label {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #111827;
-    margin-bottom: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.color-selector {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.color-circle {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid transparent;
-}
-
-.color-circle.selected {
-    box-shadow: 0 0 0 2px white, 0 0 0 4px #d1d5db;
-}
-
-.quantity-pill {
-    display: flex;
-    align-items: center;
-    background: #f3f4f6;
-    border-radius: 2rem;
-    padding: 0.25rem 0.5rem;
-}
-
-.quantity-pill button {
-    width: 30px;
-    height: 30px;
-    border: none;
-    background: transparent;
-    font-weight: bold;
-    cursor: pointer;
-    color: #374151;
-}
-
-.quantity-pill span {
-    width: 30px;
-    text-align: center;
-    font-weight: 600;
-}
-
-.total-group {
-    text-align: right;
-}
-
-.total-price-display {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1f2937;
-    background: #f3f4f6;
-    /* Optional: pill background for total as shown in ref */
-    padding: 0.25rem 1rem;
-    border-radius: 2rem;
-}
-
-/* Action Buttons */
-.action-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.wishlist-btn {
-    width: 100%;
-    padding: 1rem;
-    border: 2px solid #1f2937;
-    background: transparent;
-    color: #1f2937;
-    font-weight: 700;
-    border-radius: 2rem;
-    /* Fully rounded */
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: all 0.2s;
-}
-
-.wishlist-btn:hover {
-    background: #f9fafb;
-}
-
-.add-to-cart-btn {
-    width: 100%;
-    padding: 1rem;
-    border: none;
-    background: #fbbf24;
-    /* Yellow from reference, or use var(--primary) if strictly keeping purple */
-    /* Let's stick to the yellow for the 'reference structure' request, or user said 'same design of web'. 
-       User said 'same design of web' but 'structure of image'. 
-       If web is purple/white, yellow button might clash. 
-       Let's use the PURPLE from the web design but the SHAPE from the image. 
-    */
-    background-color: #6366f1;
-    /* Purple/Indigo */
-    color: white;
-    font-weight: 700;
-    border-radius: 2rem;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.add-to-cart-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.4);
-}
-
-.add-to-cart-btn:disabled {
-    background-color: #d1d5db;
-    cursor: not-allowed;
+    margin-bottom: 0;
 }
 
 @media (max-width: 900px) {
@@ -338,4 +338,25 @@
     .main-image {
         max-height: 400px;
     }
+}
+
+.product-description-bottom {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.description-label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+}
+
+.description-content {
+    color: #6b7280;
+    line-height: 1.6;
+    font-size: 0.95rem;
 }
