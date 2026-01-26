@@ -52,9 +52,20 @@ const checkWishlistStatus = async (req, res, next) => {
     }
 }
 
+const clearWishlist = async (req, res, next) => {
+    try {
+        const { id_usuario } = req.params;
+        await ListaDeseos.removeAll(id_usuario);
+        res.json({ message: 'Wishlist cleared successfully' });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getWishlist,
     addToWishlist,
     removeFromWishlist,
-    checkWishlistStatus
+    checkWishlistStatus,
+    clearWishlist
 };

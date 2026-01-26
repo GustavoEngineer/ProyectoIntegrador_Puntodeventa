@@ -214,49 +214,95 @@
     flex-direction: row;
     gap: 1rem;
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
     /* Limit button width */
 }
 
-.buy-now-btn {
-    flex: 1;
-    padding: 1rem;
-    background: #111827;
-    color: white;
-    font-weight: 700;
-    border: none;
-    border-radius: 2rem;
+/* Quantity Selector */
+.quantity-selector {
+    display: inline-flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 9999px;
+    /* rounded-full */
+    padding: 0.5rem;
+    gap: 1rem;
+    min-width: 140px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.quantity-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: none;
+    border: 1px solid #ffffff;
+    border-radius: 0.75rem;
+    /* rounded-xl */
     cursor: pointer;
-    text-transform: uppercase;
-    transition: background 0.2s;
+    padding: 0;
+    line-height: 1;
+    color: #4b5563;
+    transition: all 0.15s ease-in-out;
 }
 
-.buy-now-btn:hover {
-    background: #000;
+.quantity-btn:hover:not(:disabled) {
+    background-color: #f9fafb;
 }
 
+.quantity-btn:active:not(:disabled) {
+    background-color: #f3f4f6;
+}
+
+.quantity-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.quantity-btn-symbol {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
+
+.quantity-display {
+    min-width: 20px;
+    text-align: center;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #1f2937;
+    user-select: none;
+}
+
+/* Add to Cart Button */
 .add-to-cart-btn {
     flex: 1;
-    padding: 1rem;
-    background: white;
-    color: #111827;
-    border: 1px solid #e5e7eb;
+    padding: 0.875rem 1.5rem;
+    background: #111827;
+    color: white;
+    border: none;
     font-weight: 700;
-    border-radius: 2rem;
+    border-radius: 1.2rem;
     text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    letter-spacing: 0.025em;
 }
 
 .add-to-cart-btn:hover:not(:disabled) {
-    border-color: #111827;
-    transform: none;
-    box-shadow: none;
+    background: #000;
 }
 
 .add-to-cart-btn:disabled {
     background-color: #d1d5db;
     cursor: not-allowed;
+    color: #6b7280;
 }
 
 /* Lower Section Tabs */

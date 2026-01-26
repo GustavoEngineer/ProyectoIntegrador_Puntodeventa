@@ -39,6 +39,17 @@ const ListaDeseos = {
         return data;
     },
 
+    removeAll: async (idUsuario) => {
+        const { data, error } = await supabase
+            .from('ListaDeseos')
+            .delete()
+            .eq('Id_Usuario', idUsuario)
+            .select();
+
+        if (error) throw error;
+        return data;
+    },
+
     check: async (idUsuario, idPieza) => {
         const { data, error } = await supabase
             .from('ListaDeseos')

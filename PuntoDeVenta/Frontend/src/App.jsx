@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from './context/AuthContext';
+import { FavoritesProvider } from './context/FavoritesContext';
 import MainLayout from './components/layout/MainLayout';
 import CatalogPage from './pages/CatalogPage';
 import ProductDetailPage from './pages/ProductDetailPage';
@@ -8,9 +9,10 @@ import CategoriesPage from './pages/CategoriesPage';
 import AccountPage from './pages/AccountPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import FavoritesPage from './pages/FavoritesPage';
 
 // Simple routing system without react-router
-function App() {
+function AppContent() {
   const { isAuthenticated, isLoading } = useAuth();
   const [currentView, setCurrentView] = useState('catalog'); // catalog | product | cart | categories | account | login | register
   const [selectedProductId, setSelectedProductId] = useState(null);
@@ -45,6 +47,14 @@ function App() {
       return;
     }
     setCurrentView('account');
+  };
+
+  const handleViewFavorites = () => {
+    if (!isAuthenticated) {
+      handleRequireAuth();
+      return;
+    }
+    setCurrentView('favorites');
   };
 
   const handleBackToCatalog = (categoryId = null) => {
@@ -99,6 +109,7 @@ function App() {
       onViewCategories={handleViewCategories}
       onViewAccount={handleViewAccount}
       onViewCatalog={() => handleBackToCatalog()}
+      onViewFavorites={handleViewFavorites}
       currentView={currentView}
       onSearch={setSearchQuery}
       searchQuery={searchQuery}
@@ -117,7 +128,16 @@ function App() {
       {currentView === 'cart' && <CartPage key="cart" onBack={handleBackToCatalog} />}
       {currentView === 'categories' && <CategoriesPage key="categories" onSelectCategory={handleBackToCatalog} />}
       {currentView === 'account' && <AccountPage key="account" />}
+      {currentView === 'favorites' && <FavoritesPage key="favorites" onViewProduct={handleViewProduct} onBack={handleBackToCatalog} />}
     </MainLayout>
+  );
+}
+
+function App() {
+  return (
+    <FavoritesProvider>
+      <AppContent />
+    </FavoritesProvider>
   );
 }
 

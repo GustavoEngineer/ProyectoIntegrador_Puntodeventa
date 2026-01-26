@@ -11,6 +11,9 @@ router.post('/', listaDeseosController.addToWishlist);
 // DELETE remove item
 router.delete('/:id_usuario/:id_pieza', listaDeseosController.removeFromWishlist);
 
+// DELETE clear all items for a user
+router.delete('/:id_usuario', listaDeseosController.clearWishlist);
+
 // GET check status (optional helper)
 router.get('/check/:id_usuario/:id_pieza', listaDeseosController.checkWishlistStatus);
 

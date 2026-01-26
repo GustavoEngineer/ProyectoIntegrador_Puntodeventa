@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Header from './Header';
 import './MainLayout.css';
 
-const MainLayout = ({ children, onViewCart, onViewCategories, onViewAccount, onViewCatalog, currentView, onSearch, searchQuery }) => {
+const MainLayout = ({ children, onViewCart, onViewCategories, onViewAccount, onViewCatalog, onViewFavorites, currentView, onSearch, searchQuery }) => {
     return (
         <div className="main-layout">
             <Header
@@ -11,6 +11,7 @@ const MainLayout = ({ children, onViewCart, onViewCategories, onViewAccount, onV
                 onViewCategories={onViewCategories}
                 onViewAccount={onViewAccount}
                 onViewCatalog={onViewCatalog}
+                onViewFavorites={onViewFavorites}
                 currentView={currentView}
                 onSearch={onSearch}
                 searchQuery={searchQuery}
@@ -29,6 +30,7 @@ MainLayout.propTypes = {
     onViewCategories: PropTypes.func,
     onViewAccount: PropTypes.func,
     onViewCatalog: PropTypes.func,
+    onViewFavorites: PropTypes.func,
 };
 
 export default MainLayout;

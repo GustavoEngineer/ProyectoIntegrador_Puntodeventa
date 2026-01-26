@@ -110,7 +110,7 @@ CREATE TABLE "ValorAtributo" (
   CONSTRAINT fk_atributo_val FOREIGN KEY ("Id_Atributo") REFERENCES "AtributosAdicionales"("Id_Atributo") ON DELETE CASCADE
 );
 
--- 14. ListaDeseos (NUEVA TABLA)
+-- 14. ListaDeseos
 CREATE TABLE "ListaDeseos" (
   "Id_Usuario" INTEGER NOT NULL,
   "Id_Pieza" INTEGER NOT NULL,
@@ -118,4 +118,16 @@ CREATE TABLE "ListaDeseos" (
   PRIMARY KEY ("Id_Usuario", "Id_Pieza"),
   CONSTRAINT fk_usuario_wish FOREIGN KEY ("Id_Usuario") REFERENCES "Usuario"("Id_Usuario") ON DELETE CASCADE,
   CONSTRAINT fk_pieza_wish FOREIGN KEY ("Id_Pieza") REFERENCES "Pieza"("Id_Pieza") ON DELETE CASCADE
+);
+
+-- 15. Carrito (NUEVA TABLA - ¡la que faltaba!)
+CREATE TABLE "Carrito" (
+  "Id_Usuario" INTEGER NOT NULL,
+  "Id_Pieza" INTEGER NOT NULL,
+  "Cantidad" INTEGER NOT NULL CHECK ("Cantidad" > 0),
+  "PrecioUnitarioEnCarrito" NUMERIC(10,2) NOT NULL,
+  "FechaAgregado" TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY ("Id_Usuario", "Id_Pieza"),
+  CONSTRAINT fk_usuario_cart FOREIGN KEY ("Id_Usuario") REFERENCES "Usuario"("Id_Usuario") ON DELETE CASCADE,
+  CONSTRAINT fk_pieza_cart FOREIGN KEY ("Id_Pieza") REFERENCES "Pieza"("Id_Pieza") ON DELETE CASCADE
 );
