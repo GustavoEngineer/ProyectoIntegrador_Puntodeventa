@@ -1,8 +1,8 @@
 .product-detail-wrapper {
     max-width: 100%;
     margin: 0;
-    padding: 0 2rem 2rem 0;
-    /* Left padding 0 */
+    padding: 0 2rem 2rem 2rem;
+    /* Added left padding */
     position: relative;
     color: #1f2937;
     width: 100%;
@@ -405,4 +405,176 @@
     color: #6b7280;
     line-height: 1.6;
     font-size: 0.95rem;
+}
+
+/* New Lower Section Grid */
+.product-lower-section {
+    width: 100%;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 3rem;
+    margin-top: 2rem;
+}
+
+.lower-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* 50/50 split */
+    gap: 4rem;
+    /* Space between reviews and description */
+    align-items: start;
+}
+
+/* Reviews Styling */
+.section-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+}
+
+.review-form {
+    background: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+}
+
+.form-title {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: #374151;
+}
+
+.rating-input {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.star-input {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.star-btn {
+    transition: transform 0.1s;
+}
+
+.star-btn:hover {
+    transform: scale(1.1);
+}
+
+.review-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.review-textarea:focus {
+    outline: none;
+    border-color: #fbbf24;
+    /* ring property is not standard in raw CSS without Tailwind, replacing with box-shadow equivalent if needed, or removing. */
+    box-shadow: 0 0 0 2px #fcd34d;
+}
+
+/* Reviews Card Styles */
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.review-card {
+    background: #ffffff;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #f3f4f6;
+}
+
+.review-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.review-user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.review-avatar {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    overflow: hidden;
+}
+
+.review-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.reviewer-name {
+    font-weight: 700;
+    color: #111827;
+    font-size: 1rem;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.reviewer-role {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-bottom: 0.25rem;
+}
+
+.rating-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rating-value {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #1f2937;
+}
+
+/* Quote icon removed */
+
+.review-comment {
+    color: #6b7280;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .lower-grid-layout {
+        grid-template-columns: 1fr;
+        /* Stack vertically on tablet/mobile */
+        gap: 3rem;
+    }
+
+    .description-column {
+        order: -1;
+        /* Show description first on mobile if preferred, or remove this line to keep reviews first */
+    }
 }

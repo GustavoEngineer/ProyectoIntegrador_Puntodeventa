@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import Button from './Button';
+import StarRating from './StarRating';
 import './ProductCard.css';
 
 const ProductCard = ({ product, onViewDetails, onRequireLogin }) => {
@@ -15,6 +16,7 @@ const ProductCard = ({ product, onViewDetails, onRequireLogin }) => {
         Precio,
         Cantidad,
         ImagenUrl,
+        Calificacionpromedio,
     } = product;
 
     const imageUrl = ImagenUrl || 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=500&q=80';
@@ -37,6 +39,10 @@ const ProductCard = ({ product, onViewDetails, onRequireLogin }) => {
 
             <div className="card-info">
                 <h3 className="card-title" title={Nombre}>{Nombre}</h3>
+
+                <div style={{ marginBottom: '8px' }}>
+                    <StarRating rating={Calificacionpromedio} />
+                </div>
 
                 <div className="card-footer">
                     <div className="card-price-block">

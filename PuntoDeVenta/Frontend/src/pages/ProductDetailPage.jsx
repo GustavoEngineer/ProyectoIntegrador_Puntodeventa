@@ -3,6 +3,8 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useFavorites } from '../context/FavoritesContext';
 import { apiCall } from '../utils/api';
+import StarRating from '../components/common/StarRating';
+import ReviewsSection from '../components/common/ReviewsSection';
 import './ProductDetailPage.css';
 
 const ProductDetailPage = ({ productId, onBack, onRequireLogin }) => {
@@ -70,6 +72,11 @@ const ProductDetailPage = ({ productId, onBack, onRequireLogin }) => {
                                 <span className="dot active"></span>
                             </div>
                         </div>
+
+                        {/* Reviews Section - Below Image */}
+                        <div style={{ width: '100%', marginTop: '3rem', maxWidth: '450px' }}>
+                            <ReviewsSection productId={productId} />
+                        </div>
                     </div>
 
                     {/* Right Column: Info */}
@@ -95,9 +102,9 @@ const ProductDetailPage = ({ productId, onBack, onRequireLogin }) => {
                                         </svg>
                                     </button>
                                 </div>
-                                {/* Static Stars */}
+                                {/* Dynamic Star Rating */}
                                 <div className="product-rating">
-                                    ★★★★★ <span style={{ color: '#6b7280', fontSize: '1rem', marginLeft: '0.25rem' }}>5.0</span>
+                                    <StarRating rating={pieza.Calificacionpromedio} />
                                 </div>
                             </div>
 
@@ -132,8 +139,8 @@ const ProductDetailPage = ({ productId, onBack, onRequireLogin }) => {
                                 </button>
                             </div>
 
-                            {/* Description Bottom Section - Moved here */}
-                            <div className="product-description-bottom">
+                            {/* Description Section - Below Add to Cart */}
+                            <div className="product-description-bottom" style={{ marginTop: '3rem', borderTop: '1px solid #e5e7eb', paddingTop: '1.5rem' }}>
                                 <span className="description-label">DESCRIPTION</span>
                                 <div className="description-content">
                                     <p style={{ marginBottom: '1rem' }}>

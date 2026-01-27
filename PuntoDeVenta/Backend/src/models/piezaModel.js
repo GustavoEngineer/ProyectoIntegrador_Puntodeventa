@@ -45,10 +45,10 @@ const Pieza = {
     },
 
     create: async (pieza) => {
-        const { Nombre, Descripcion, Garantia, Precio, Cantidad, Id_CategoriaPieza, Id_EstadoPieza, Id_TipoPieza } = pieza;
+        const { Nombre, Descripcion, Garantia, Precio, Cantidad, Id_CategoriaPieza, Id_EstadoPieza, Id_TipoPieza, CalificacionPromedio } = pieza;
         const { data, error } = await supabase
             .from('Pieza')
-            .insert([{ Nombre, Descripcion, Garantia, Precio, Cantidad, Id_CategoriaPieza, Id_EstadoPieza, Id_TipoPieza }])
+            .insert([{ Nombre, Descripcion, Garantia, Precio, Cantidad, Id_CategoriaPieza, Id_EstadoPieza, Id_TipoPieza, CalificacionPromedio }])
             .select()
             .single();
 
@@ -57,10 +57,10 @@ const Pieza = {
     },
 
     update: async (id, pieza) => {
-        const { Nombre, Descripcion, Garantia, Precio, Cantidad, Id_CategoriaPieza, Id_EstadoPieza, Id_TipoPieza } = pieza;
+        const { Nombre, Descripcion, Garantia, Precio, Cantidad, Id_CategoriaPieza, Id_EstadoPieza, Id_TipoPieza, CalificacionPromedio } = pieza;
         const { data, error } = await supabase
             .from('Pieza')
-            .update({ Nombre, Descripcion, Garantia, Precio, Cantidad, Id_CategoriaPieza, Id_EstadoPieza, Id_TipoPieza })
+            .update({ Nombre, Descripcion, Garantia, Precio, Cantidad, Id_CategoriaPieza, Id_EstadoPieza, Id_TipoPieza, CalificacionPromedio })
             .eq('Id_Pieza', id)
             .select()
             .single();
