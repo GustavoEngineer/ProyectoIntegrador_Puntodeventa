@@ -111,6 +111,16 @@
     box-shadow: none !important;
     -webkit-appearance: none;
     appearance: none;
+    overflow: hidden;
+}
+
+.nav-home-btn.active,
+.cart-icon-btn.active,
+.favoritos-btn.active {
+    width: auto;
+    padding: 0 1.25rem;
+    border-radius: 9999px;
+    gap: 0.5rem;
 }
 
 
