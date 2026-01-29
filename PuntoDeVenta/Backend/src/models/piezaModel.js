@@ -1,25 +1,31 @@
 const supabase = require('../config/supabase');
 
 const Pieza = {
-    getAll: async () => {
-        const { data, error } = await supabase
+    getAll: async (page = 1, limit = 25) => {
+        const from = (page - 1) * limit;
+        const to = from + limit - 1;
+
+        const { data, error, count } = await supabase
             .from('Pieza')
             .select(`
                 *,
                 Categoria:CategoriaPieza(Descripcion),
                 Estado:EstadoPieza(Descripcion),
                 Tipo:TipoPieza(Descripcion)
-            `);
+            `, { count: 'exact' })
+            .range(from, to);
 
         if (error) throw error;
 
         // Map to match original flattened structure
-        return data.map(p => ({
+        const mappedData = data.map(p => ({
             ...p,
             Categoria: p.Categoria?.Descripcion,
             Estado: p.Estado?.Descripcion,
             Tipo: p.Tipo?.Descripcion
         }));
+
+        return { data: mappedData, count };
     },
 
     getById: async (id) => {

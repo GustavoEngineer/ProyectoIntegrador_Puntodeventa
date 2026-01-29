@@ -2,8 +2,19 @@ const Pieza = require('../models/piezaModel');
 
 const getAllPiezas = async (req, res, next) => {
     try {
-        const piezas = await Pieza.getAll();
-        res.json(piezas);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 25;
+        const { data, count } = await Pieza.getAll(page, limit);
+
+        res.json({
+            data,
+            meta: {
+                total: count,
+                page,
+                limit,
+                totalPages: Math.ceil(count / limit)
+            }
+        });
     } catch (error) {
         next(error);
     }

@@ -40,7 +40,7 @@ const ProductCard = ({ product, onViewDetails, onRequireLogin }) => {
             <div className="card-info">
                 <h3 className="card-title" title={Nombre}>{Nombre}</h3>
 
-                <div style={{ marginBottom: '8px' }}>
+                <div style={{ marginBottom: '2px' }}>
                     <StarRating rating={Calificacionpromedio} />
                 </div>
 
