@@ -24,7 +24,13 @@ export const CartProvider = ({ children }) => {
         } else {
             const savedCart = localStorage.getItem('mediparts-cart');
             if (savedCart) {
-                setCartItems(JSON.parse(savedCart));
+                try {
+                    setCartItems(JSON.parse(savedCart));
+                } catch (error) {
+                    console.error('Error loading cart from local storage:', error);
+                    setCartItems([]);
+                    localStorage.removeItem('mediparts-cart');
+                }
             } else {
                 setCartItems([]);
             }

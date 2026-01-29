@@ -7,9 +7,20 @@ import './Header.css';
 
 const Header = ({ onViewCart, onViewCategories, onViewAccount, onViewCatalog, onViewFavorites, currentView, onSearch, searchQuery }) => {
     const { getCartCount } = useCart();
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user, logout } = useAuth();
     const { isDarkMode, toggleTheme } = useTheme();
     const cartCount = getCartCount();
+
+    // Logic to get initials
+    const getInitials = () => {
+        if (!user || !user.name) return 'U';
+        const parts = user.name.trim().split(' ');
+        if (parts.length === 0) return 'U';
+        if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+        return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase();
+    };
+
+    const initials = getInitials();
 
     return (
         <header className="header">
@@ -49,13 +60,12 @@ const Header = ({ onViewCart, onViewCategories, onViewAccount, onViewCatalog, on
 
                 </div>
 
-                <div className="header-center">
+                <div className="header-right">
                     <button className="nav-home-btn" onClick={onViewCatalog} title="Ir al inicio">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                             <polyline points="9 22 9 12 15 12 15 22"></polyline>
                         </svg>
-                        <span>Home</span>
                     </button>
 
                     <button className="cart-icon-btn" onClick={onViewCart}>
@@ -67,26 +77,28 @@ const Header = ({ onViewCart, onViewCategories, onViewAccount, onViewCatalog, on
                             </svg>
                             {cartCount > 0 && <span className="cart-badge-dot"></span>}
                         </div>
-                        <span className="cart-text">Carrito</span>
                     </button>
 
                     <button className="favoritos-btn" onClick={onViewFavorites} title="Favoritos">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                         </svg>
-                        <span className="favoritos-text">Favoritos</span>
                     </button>
-
-
-                </div>
-
-                <div className="header-right">
 
                     {/* Profile Avatar */}
                     {isAuthenticated ? (
-                        <div className="user-avatar-circle logged-in" onClick={onViewAccount} title="Mi Cuenta">
-                            <span className="avatar-initial">U</span>
-                        </div>
+                        <>
+                            <div className="user-avatar-circle logged-in" onClick={onViewAccount} title="Mi Cuenta">
+                                <span className="avatar-initial">{initials}</span>
+                            </div>
+                            <button className="logout-btn" onClick={logout} title="Cerrar Sesión">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                    <polyline points="16 17 21 12 16 7"></polyline>
+                                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                                </svg>
+                            </button>
+                        </>
                     ) : (
                         <div className="user-avatar-circle guest" onClick={onViewAccount} title="Iniciar Sesión">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

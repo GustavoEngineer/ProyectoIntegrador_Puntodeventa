@@ -9,19 +9,7 @@ const AccountPage = () => {
     const [showOrderDetails, setShowOrderDetails] = useState(null);
     const [showChangePassword, setShowChangePassword] = useState(false);
 
-    if (!isAuthenticated) {
-        return (
-            <div className="account-page">
-                <div className="account-header">
-                    <h1>Mi Cuenta</h1>
-                    <p>Inicia sesión para ver tu perfil y pedidos</p>
-                </div>
-                <div className="account-content" style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
-                    <p>Por favor inicia sesión para acceder a esta sección.</p>
-                </div>
-            </div>
-        );
-    }
+
 
     // Estados para edición de perfil
     const [editData, setEditData] = useState({
@@ -131,6 +119,20 @@ const AccountPage = () => {
             .toUpperCase()
             .substring(0, 2);
     };
+
+    if (!isAuthenticated) {
+        return (
+            <div className="account-page">
+                <div className="account-header">
+                    <h1>Mi Cuenta</h1>
+                    <p>Inicia sesión para ver tu perfil y pedidos</p>
+                </div>
+                <div className="account-content" style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
+                    <p>Por favor inicia sesión para acceder a esta sección.</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="account-page">

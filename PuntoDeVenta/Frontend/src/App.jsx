@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from './context/AuthContext';
 import { FavoritesProvider } from './context/FavoritesContext';
 import MainLayout from './components/layout/MainLayout';
@@ -18,6 +18,22 @@ function AppContent() {
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Handle auth state changes
+  useEffect(() => {
+    if (isLoading) return;
+
+    // If logged in and on auth pages, go to catalog
+    if (isAuthenticated && (currentView === 'login' || currentView === 'register')) {
+      setCurrentView('catalog');
+    }
+
+    // If logged out and on protected pages, go to catalog
+    const protectedViews = ['cart', 'account', 'favorites'];
+    if (!isAuthenticated && protectedViews.includes(currentView)) {
+      setCurrentView('catalog');
+    }
+  }, [isAuthenticated, currentView, isLoading]);
 
   const handleViewProduct = (productId) => {
     setSelectedProductId(productId);
@@ -116,9 +132,10 @@ function AppContent() {
     >
       {currentView === 'catalog' && (
         <CatalogPage
-          key="catalog"
+          key={`catalog-${isAuthenticated}`}
           onViewProduct={handleViewProduct}
           selectedCategory={selectedCategory}
+
           searchQuery={searchQuery}
           onSelectCategory={handleBackToCatalog}
           onRequireLogin={handleRequireAuth}
