@@ -80,10 +80,14 @@ const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCat
     };
 
     const handlePageChange = (page) => {
-        if (page >= 1 && page <= totalPages && page !== currentPage) {
-            setCurrentPage(page);
+        const targetPage = Number(page);
+        console.log(`Changing page to: ${targetPage}, Current: ${currentPage}, Total: ${totalPages}`);
+        if (targetPage >= 1 && targetPage <= totalPages && targetPage !== currentPage) {
+            setCurrentPage(targetPage);
             // Scroll to top of catalog
-            catalogTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setTimeout(() => {
+                catalogTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 0);
         }
     };
 
@@ -106,6 +110,7 @@ const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCat
         return (
             <div className="pagination-container">
                 <button
+                    type="button"
                     className="pagination-arrow"
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
@@ -115,13 +120,14 @@ const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCat
 
                 {startPage > 1 && (
                     <>
-                        <button className="pagination-number" onClick={() => handlePageChange(1)}>1</button>
+                        <button type="button" className="pagination-number" onClick={() => handlePageChange(1)}>1</button>
                         {startPage > 2 && <span className="pagination-dots">...</span>}
                     </>
                 )}
 
                 {pageNumbers.map(num => (
                     <button
+                        type="button"
                         key={num}
                         className={`pagination-number ${num === currentPage ? 'active' : ''}`}
                         onClick={() => handlePageChange(num)}
@@ -133,11 +139,12 @@ const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCat
                 {endPage < totalPages && (
                     <>
                         {endPage < totalPages - 1 && <span className="pagination-dots">...</span>}
-                        <button className="pagination-number" onClick={() => handlePageChange(totalPages)}>{totalPages}</button>
+                        <button type="button" className="pagination-number" onClick={() => handlePageChange(totalPages)}>{totalPages}</button>
                     </>
                 )}
 
                 <button
+                    type="button"
                     className="pagination-arrow"
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
