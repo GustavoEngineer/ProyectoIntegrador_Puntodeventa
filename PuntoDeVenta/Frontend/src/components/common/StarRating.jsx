@@ -15,8 +15,8 @@ const StarRating = ({ rating }) => {
                 return (
                     <svg
                         key={index}
-                        width="16"
-                        height="16"
+                        width="20"
+                        height="20"
                         viewBox="0 0 24 24"
                         fill={starFilled ? "#FBBF24" : "#E5E7EB"} // Gold if filled, Gray-200 if empty
                         stroke="none"
@@ -26,9 +26,6 @@ const StarRating = ({ rating }) => {
                     </svg>
                 );
             })}
-            <span style={{ color: '#6B7280', fontSize: '0.875rem', marginLeft: '4px' }}>
-                {validRating.toFixed(1)}
-            </span>
         </div>
     );
 };
