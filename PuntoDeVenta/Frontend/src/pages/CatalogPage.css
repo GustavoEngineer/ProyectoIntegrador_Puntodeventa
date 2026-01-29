@@ -1,16 +1,8 @@
 .catalog-layout {
-    display: flex;
-    gap: 3rem;
-    align-items: flex-start;
+    width: 100%;
 }
 
-.catalog-sidebar-wrapper {
-    width: 250px;
-    flex-shrink: 0;
-    position: sticky;
-    top: 6rem;
-    /* Adjust based on header height, assumes sticky header */
-}
+
 
 .catalog-content {
     flex: 1;

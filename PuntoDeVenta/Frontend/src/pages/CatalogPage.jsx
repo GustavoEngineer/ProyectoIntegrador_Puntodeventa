@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { apiCall } from '../utils/api';
 import ProductCard from '../components/common/ProductCard';
-import CategorySidebar from '../components/common/CategorySidebar';
 import './CatalogPage.css';
 
 const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCategory, ...props }) => {
@@ -67,13 +66,7 @@ const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCat
     return (
         <div className="catalog-page">
             <div className="catalog-layout">
-                <div className="catalog-sidebar-wrapper">
-                    <CategorySidebar
-                        selectedCategory={selectedCategory}
-                        onSelectCategory={onSelectCategory}
-                        products={piezas} // Pass ALL products so categories don't disappear
-                    />
-                </div>
+
 
                 <div className="catalog-content">
                     <div className="catalog-header">

@@ -29,6 +29,15 @@
     z-index: 10;
 }
 
+.header-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 2;
+    gap: 0.5rem;
+    /* Gap between category button and search bar */
+}
+
 /* Search Container Styles */
 .search-container {
     display: flex;
@@ -39,15 +48,13 @@
     /* Pill shape */
     flex: 1;
     width: 100%;
-    max-width: 100%;
+    max-width: 400px;
     position: relative;
     border: 1px solid transparent;
     transition: all 0.2s ease;
 }
 
-[data-theme="dark"] .search-container {
-    background-color: rgba(255, 255, 255, 0.05);
-}
+
 
 .search-container:focus-within {
     background-color: var(--background);
@@ -68,12 +75,102 @@
     outline: none;
     font-size: 0.95rem;
     color: var(--text-primary);
-    width: 100%;
+    flex: 1;
+    width: auto;
 }
 
 .search-input::placeholder {
     color: var(--text-secondary);
     opacity: 0.7;
+}
+
+.search-category-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    margin-left: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.search-category-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--primary);
+}
+
+.search-category-btn.active {
+    background-color: rgba(79, 70, 229, 0.1);
+    color: var(--primary);
+}
+
+.category-dropdown-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.category-dropdown-menu {
+    position: absolute;
+    top: 130%;
+    /* Position it below the button with some gap */
+    right: 0;
+    width: 250px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border);
+    padding: 0.5rem 0;
+    z-index: 1000;
+    overflow: hidden;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-header {
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.dropdown-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.dropdown-list li {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+
+.dropdown-list li:hover {
+    background-color: var(--background-secondary, #f3f4f6);
+    color: var(--primary);
 }
 
 /* Header Right */
@@ -88,7 +185,7 @@
     z-index: 20;
 }
 
-/* Unified Navigation Buttons (Home, Cart, Wishlist) */
+/* Unified Navigation Buttons (Home, Cart, Wishlist, Category) */
 .nav-home-btn,
 .cart-icon-btn,
 .favoritos-btn {
@@ -105,7 +202,6 @@
     border-radius: 50%;
     color: var(--text-primary);
     transition: all 0.2s;
-    margin-right: 0.5rem;
     height: 38px;
     width: 38px;
     box-shadow: none !important;
@@ -132,11 +228,7 @@
     color: var(--primary);
 }
 
-[data-theme="dark"] .nav-home-btn:hover,
-[data-theme="dark"] .cart-icon-btn:hover,
-[data-theme="dark"] .favoritos-btn:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-}
+
 
 /* Ensure icons are consistent */
 .nav-home-btn svg,

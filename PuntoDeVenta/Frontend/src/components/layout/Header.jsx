@@ -1,15 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { apiCall } from '../../utils/api';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
-import { useTheme } from '../../context/ThemeContext';
 import Button from '../common/Button';
 import './Header.css';
 
 const Header = ({ onViewCart, onViewCategories, onViewAccount, onViewCatalog, onViewFavorites, currentView, onSearch, searchQuery }) => {
     const { getCartCount } = useCart();
     const { isAuthenticated, user, logout } = useAuth();
-    const { isDarkMode, toggleTheme } = useTheme();
     const cartCount = getCartCount();
+
+    // Category dropdown state
+    const [categories, setCategories] = useState([]);
+    const [showCategoryMenu, setShowCategoryMenu] = useState(false);
+    const dropdownRef = useRef(null);
+
+    // Fetch categories
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const data = await apiCall('/categorias-pieza');
+                setCategories(Array.isArray(data) ? data : []);
+            } catch (err) {
+                console.error('Error fetching categories for header:', err);
+            }
+        };
+        fetchCategories();
+    }, []);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowCategoryMenu(false);
+            }
+        };
+
+        if (showCategoryMenu) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showCategoryMenu]);
+
+    const handleCategoryClick = (categoryId) => {
+        onViewCatalog(categoryId);
+        setShowCategoryMenu(false);
+    };
+
+    const toggleCategoryMenu = (e) => {
+        e.stopPropagation();
+        setShowCategoryMenu(!showCategoryMenu);
+    };
+
 
     // Logic to get initials
     const getInitials = () => {
@@ -26,24 +73,13 @@ const Header = ({ onViewCart, onViewCategories, onViewAccount, onViewCatalog, on
         <header className="header">
             <div className="header-container">
                 <div className="header-left">
-                    <button
-                        className="theme-toggle-btn"
-                        onClick={toggleTheme}
-                        title={isDarkMode ? 'Modo claro' : 'Modo oscuro'}
-                    >
-                        {isDarkMode ? (
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <circle cx="12" cy="12" r="4" />
-                                <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-                            </svg>
-                        ) : (
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                            </svg>
-                        )}
-                    </button>
+                    {/* Placeholder for left content if needed, or keeping logo here later */}
+                </div>
 
-                    {/* Search Bar - Taking part of left/center space */}
+                <div className="header-center">
+
+
+                    {/* Search Bar - Center */}
                     <div className="search-container">
                         <svg className="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="11" cy="11" r="8"></circle>
@@ -56,8 +92,37 @@ const Header = ({ onViewCart, onViewCategories, onViewAccount, onViewCatalog, on
                             value={searchQuery}
                             onChange={(e) => onSearch && onSearch(e.target.value)}
                         />
-                    </div>
+                        <div className="category-dropdown-wrapper" ref={dropdownRef}>
+                            <button
+                                className={`search-category-btn ${showCategoryMenu ? 'active' : ''}`}
+                                onClick={toggleCategoryMenu}
+                                title="Categorías"
+                            >
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <rect x="3" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="14" width="7" height="7"></rect>
+                                    <rect x="3" y="14" width="7" height="7"></rect>
+                                </svg>
+                            </button>
 
+                            {showCategoryMenu && (
+                                <div className="category-dropdown-menu">
+                                    <div className="dropdown-header">Categorías</div>
+                                    <ul className="dropdown-list">
+                                        <li onClick={() => handleCategoryClick(null)}>
+                                            Todas las categorías
+                                        </li>
+                                        {categories.map(cat => (
+                                            <li key={cat.Id_CategoriaPieza} onClick={() => handleCategoryClick(cat.Id_CategoriaPieza)}>
+                                                {cat.Descripcion || cat.Nombre}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 </div>
 
                 <div className="header-right">

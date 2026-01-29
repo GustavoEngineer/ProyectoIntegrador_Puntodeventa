@@ -124,7 +124,7 @@ function AppContent() {
       onViewCart={handleViewCart}
       onViewCategories={handleViewCategories}
       onViewAccount={handleViewAccount}
-      onViewCatalog={() => handleBackToCatalog()}
+      onViewCatalog={handleBackToCatalog}
       onViewFavorites={handleViewFavorites}
       currentView={currentView}
       onSearch={setSearchQuery}

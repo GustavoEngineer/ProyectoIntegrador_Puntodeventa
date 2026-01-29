@@ -20,29 +20,7 @@
   --font-sans: 'Manrope', system-ui, -apple-system, sans-serif;
 }
 
-/* Modo Oscuro */
-[data-theme="dark"] {
-  --primary: #6366f1;
-  --secondary: #94a3b8;
-  --accent: #60a5fa;
-  --accent-hover: #3b82f6;
-  --background: #0f172a;
-  --surface: #1e293b;
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --border: #334155;
-  --danger: #f87171;
-  --success: #4ade80;
-}
 
-[data-theme="dark"] .header {
-  background-color: rgba(15, 23, 42, 0.95);
-}
-
-[data-theme="dark"] .theme-toggle-btn:hover {
-  background: var(--primary);
-  border-color: var(--primary);
-}
 
 * {
   margin: 0;
