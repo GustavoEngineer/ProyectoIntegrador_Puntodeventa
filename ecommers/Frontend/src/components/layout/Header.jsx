@@ -114,7 +114,7 @@ const Header = ({ onViewCart, onViewCategories, onViewAccount, onViewCatalog, on
                                             Todas las categorías
                                         </li>
                                         {categories.map(cat => (
-                                            <li key={cat.Id_CategoriaPieza} onClick={() => handleCategoryClick(cat.Id_CategoriaPieza)}>
+                                            <li key={cat.Id_CategoriaPieza} onClick={() => handleCategoryClick(cat)}>
                                                 {cat.Descripcion || cat.Nombre}
                                             </li>
                                         ))}

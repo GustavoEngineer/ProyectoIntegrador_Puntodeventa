@@ -1,7 +1,23 @@
 .categories-page {
+    width: 100%;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    font-family: var(--font-sans);
+}
+
+.categories-content-wrapper {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 0 2rem;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
 }
 
 .categories-header {

@@ -16,12 +16,38 @@ const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCat
     const LIMIT = 25;
     const catalogTopRef = useRef(null);
     const pageCache = useRef({});
-    const { breadcrumbs, resetBreadcrumbs, handleBreadcrumbClick } = useBreadcrumbs();
+    const { breadcrumbs, resetBreadcrumbs, handleBreadcrumbClick, pushBreadcrumb } = useBreadcrumbs();
 
-    // Reset breadcrumbs on mount (Catalog is root)
+    // Reset breadcrumbs on mount and update if category is selected
     useEffect(() => {
         resetBreadcrumbs();
-    }, []);
+
+        if (selectedCategory) {
+            const catName = (typeof selectedCategory === 'object') ? (selectedCategory.Descripcion || selectedCategory.Nombre) : null;
+            const catId = (typeof selectedCategory === 'object') ? selectedCategory.Id_CategoriaPieza : selectedCategory;
+
+            if (catName) {
+                // If we have a name, add it to breadcrumbs
+                // We use a slight delay or just push immediately after reset. 
+                // Since resetBreadcrumbs is state update, pushBreadcrumb might need to wait or rely on ordering.
+                // Actually Context state updates are batched/async usually. 
+                // But reset setBreadcrumbs([...]). push does setBreadcrumbs(prev => ...).
+                // So they should sequence correctly if called effectively.
+
+                // However, resetBreadcrumbs sets state. pushBreadcrumbs uses functional update.
+                // So if reset is called, it sets state. Push reads previous state (which might be the old one if not updated yet? No, functional update reads pending state logic applied? No, it reads current state at time of execution of callback).
+
+                // Better approach: resetBreadcrumbs resets to Home.
+                // Then we push.
+                pushBreadcrumb({
+                    label: catName,
+                    type: 'category',
+                    id: catId,
+                    action: () => onSelectCategory(selectedCategory)
+                });
+            }
+        }
+    }, [selectedCategory]);
 
     // Reset page to 1 when filters change
     useEffect(() => {
@@ -31,7 +57,8 @@ const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCat
 
     // Fetch Piezas effect
     useEffect(() => {
-        fetchPiezas(currentPage, selectedCategory, searchQuery);
+        const catId = (selectedCategory && typeof selectedCategory === 'object') ? selectedCategory.Id_CategoriaPieza : selectedCategory;
+        fetchPiezas(currentPage, catId, searchQuery);
     }, [currentPage, selectedCategory, searchQuery, retryCount]);
 
     const fetchPiezas = async (page, category, search) => {
