@@ -4,7 +4,10 @@ const getAllPiezas = async (req, res, next) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 25;
-        const { data, count } = await Pieza.getAll(page, limit);
+        const categoryId = req.query.category;
+        const searchQuery = req.query.search;
+
+        const { data, count } = await Pieza.getAll(page, limit, { categoryId, searchQuery });
 
         res.json({
             data,

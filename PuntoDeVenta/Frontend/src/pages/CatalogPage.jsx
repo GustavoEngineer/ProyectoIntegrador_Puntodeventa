@@ -13,60 +13,66 @@ const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCat
     const [totalPages, setTotalPages] = useState(1);
     const LIMIT = 25;
     const catalogTopRef = useRef(null);
+    const pageCache = useRef({});
+
+    // Reset page to 1 when filters change
+    useEffect(() => {
+        setCurrentPage(1);
+        pageCache.current = {}; // Clear cache on filter change
+    }, [selectedCategory, searchQuery]);
 
     // Fetch Piezas effect
     useEffect(() => {
-        fetchPiezas(currentPage);
-    }, [currentPage, retryCount]);
+        fetchPiezas(currentPage, selectedCategory, searchQuery);
+    }, [currentPage, selectedCategory, searchQuery, retryCount]);
 
-    // Filtering Effect
-    useEffect(() => {
-        // Filtering is now largely server-side, but we still handle client-side sorting/filtering if needed
-        // For search/category change, we ideally should reset to page 1 and refetch.
-        // Assuming search/category filtering is done client-side on the current PAGE of results for now
-        // based on previous logic, but ideally this should be server-side.
-        // For this task, we'll keep the client-side filter on the fetched page data.
+    const fetchPiezas = async (page, category, search) => {
+        const cacheKey = `${page}-${category || ''}-${search || ''}`;
 
-        let result = [...piezas];
-
-        // 1. Filter by Category
-        if (selectedCategory) {
-            result = result.filter(pieza => pieza.Id_CategoriaPieza === selectedCategory);
+        // Check cache first
+        if (pageCache.current[cacheKey]) {
+            setPiezas(pageCache.current[cacheKey].data);
+            setTotalPages(pageCache.current[cacheKey].totalPages);
+            setFilteredPiezas(pageCache.current[cacheKey].data);
+            return;
         }
 
-        // 2. Filter by Search Query
-        if (searchQuery) {
-            const lowerQuery = searchQuery.toLowerCase();
-            result = result.filter(pieza =>
-                pieza.Nombre.toLowerCase().includes(lowerQuery) ||
-                (pieza.Descripcion && pieza.Descripcion.toLowerCase().includes(lowerQuery))
-            );
-        }
-
-        setFilteredPiezas(result);
-    }, [searchQuery, selectedCategory, piezas]);
-
-    const fetchPiezas = async (page) => {
         try {
             setLoading(true);
             setError(null);
 
+            // Build query params
+            const params = new URLSearchParams({
+                page: page,
+                limit: LIMIT
+            });
+            if (category) params.append('category', category);
+            if (search) params.append('search', search);
+
             // Fetch pieces with pagination
-            let response = await apiCall(`/piezas?page=${page}&limit=${LIMIT}`);
+            let response = await apiCall(`/piezas?${params.toString()}`);
             let data = [];
+            let fetchedTotalPages = 1;
 
             // Handle new response structure
             if (response && response.data) {
                 data = response.data;
-                setTotalPages(response.meta.totalPages);
+                fetchedTotalPages = response.meta.totalPages;
+                setTotalPages(fetchedTotalPages);
             } else if (Array.isArray(response)) {
-                // Fallback for old structure if needed (though backend is updated)
                 data = response;
             } else {
                 console.error('Unexpected API response:', response);
             }
 
+            // Save to cache
+            pageCache.current[cacheKey] = {
+                data,
+                totalPages: fetchedTotalPages
+            };
+
             setPiezas(data);
+            setFilteredPiezas(data);
         } catch (err) {
             setError(err.message);
             console.error('Error fetching piezas:', err);

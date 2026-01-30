@@ -1,19 +1,28 @@
 const supabase = require('../config/supabase');
 
 const Pieza = {
-    getAll: async (page = 1, limit = 25) => {
+    getAll: async (page = 1, limit = 25, filters = {}) => {
         const from = (page - 1) * limit;
         const to = from + limit - 1;
 
-        const { data, error, count } = await supabase
+        let query = supabase
             .from('Pieza')
             .select(`
                 *,
                 Categoria:CategoriaPieza(Descripcion),
                 Estado:EstadoPieza(Descripcion),
                 Tipo:TipoPieza(Descripcion)
-            `, { count: 'exact' })
-            .range(from, to);
+            `, { count: 'exact' });
+
+        if (filters.categoryId) {
+            query = query.eq('Id_CategoriaPieza', filters.categoryId);
+        }
+
+        if (filters.searchQuery) {
+            query = query.ilike('Nombre', `%${filters.searchQuery}%`);
+        }
+
+        const { data, error, count } = await query.range(from, to);
 
         if (error) throw error;
 
