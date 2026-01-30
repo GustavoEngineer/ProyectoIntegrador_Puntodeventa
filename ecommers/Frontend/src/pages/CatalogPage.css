@@ -1,0 +1,155 @@
+.catalog-layout {
+    width: 100%;
+}
+
+
+
+.catalog-content {
+    flex: 1;
+    padding-top: 2rem;
+    /* Compensate for fixed header */
+}
+
+.catalog-header {
+    margin-top: 1rem;
+    margin-bottom: 4rem;
+    margin-left: 8rem;
+    text-align: left;
+    font-size: 1.5rem;
+}
+
+
+
+.catalog-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.catalog-subtitle {
+    display: none;
+}
+
+.catalog-loading,
+.catalog-error,
+.catalog-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-secondary);
+}
+
+.catalog-error {
+    color: #dc2626;
+}
+
+.catalog-error button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.catalog-error button:hover {
+    opacity: 0.9;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 280px);
+    gap: 2rem;
+    justify-content: center;
+}
+
+@media (max-width: 1280px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .catalog-layout {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .catalog-sidebar-wrapper {
+        width: 100%;
+        position: static;
+        top: 0;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+}
+
+/* Pagination Container */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+/* Pagination Buttons (Numbers and Arrows) */
+.pagination-number,
+.pagination-arrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    /* Slightly rounded squares */
+    background-color: #ffffff;
+    color: var(--primary);
+    /* Blue text for inactive */
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pagination-number:hover,
+.pagination-arrow:hover {
+    background-color: #f5f9ff;
+    border-color: var(--primary);
+}
+
+/* Active Page */
+.pagination-number.active {
+    background-color: var(--primary);
+    /* Blue background */
+    color: #ffffff;
+    /* White text */
+    border-color: var(--primary);
+}
+
+/* Disabled Arrow */
+.pagination-arrow:disabled {
+    color: #ccc;
+    border-color: #eee;
+    background-color: #f9f9f9;
+    cursor: not-allowed;
+}
+
+/* Dots */
+.pagination-dots {
+    color: var(--primary);
+    font-weight: bold;
+    margin: 0 0.25rem;
+}

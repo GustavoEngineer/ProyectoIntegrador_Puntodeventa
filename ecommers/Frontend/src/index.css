@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
+:root {
+  --primary: #2C6A4A;
+  /* Accent 01: Green */
+  --primary-hover: #1e4b34;
+  /* Darker Green */
+  --secondary: #E5E3D4;
+  /* Accent 02: Beige */
+  --accent: #E5E3D4;
+  --accent-hover: #d1cfbe;
+
+  --background: #FFFFFF;
+  /* Accent 03: White */
+  --background-secondary: #E5E3D4;
+  /* Beige for secondary backgrounds */
+  --surface: #FFFFFF;
+
+  --text-primary: #000000;
+  /* Accent 04: Black */
+  --text-secondary: #404040;
+  /* Dark Gray for secondary text */
+  --border: #d1d5db;
+  /* Gray border */
+
+  --danger: #ef4444;
+  --success: #2C6A4A;
+  /* Use primary green for success too */
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  --font-sans: 'Manrope', system-ui, -apple-system, sans-serif;
+}
+
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
