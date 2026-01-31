@@ -3,6 +3,7 @@ import { useAuth } from './context/AuthContext';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { BreadcrumbProvider } from './context/BreadcrumbContext'; // Import BreadcrumbProvider
 import MainLayout from './components/layout/MainLayout';
+import AdminLayout from './components/layout/AdminLayout';
 import CatalogPage from './pages/CatalogPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
@@ -11,26 +12,41 @@ import AccountPage from './pages/AccountPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import FavoritesPage from './pages/FavoritesPage';
+import AdminPage from './pages/admin/AdminPage';
 
 // Simple routing system without react-router
 function AppContent() {
-  const { isAuthenticated, isLoading } = useAuth();
-  const [currentView, setCurrentView] = useState('catalog'); // catalog | product | cart | categories | account | login | register
+  const { isAuthenticated, isLoading, user } = useAuth();
+  const [currentView, setCurrentView] = useState(() => localStorage.getItem('app_currentView') || 'catalog');
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [adminView, setAdminView] = useState(() => localStorage.getItem('app_adminView') || 'Home');
+
+  // Persist Navigation State
+  useEffect(() => {
+    localStorage.setItem('app_currentView', currentView);
+  }, [currentView]);
+
+  useEffect(() => {
+    localStorage.setItem('app_adminView', adminView);
+  }, [adminView]);
 
   // Handle auth state changes
   useEffect(() => {
     if (isLoading) return;
 
-    // If logged in and on auth pages, go to catalog
+    // If logged in and on auth pages, go to catalog or admin depending on role
     if (isAuthenticated && (currentView === 'login' || currentView === 'register')) {
-      setCurrentView('catalog');
+      if (user?.role === 'Administrador') {
+        setCurrentView('admin');
+      } else {
+        setCurrentView('catalog');
+      }
     }
 
     // If logged out and on protected pages, go to catalog
-    const protectedViews = ['cart', 'account', 'favorites'];
+    const protectedViews = ['cart', 'account', 'favorites', 'admin'];
     if (!isAuthenticated && protectedViews.includes(currentView)) {
       setCurrentView('catalog');
     }
@@ -149,6 +165,15 @@ function AppContent() {
   }
 
   // Si está autenticado, mostrar la aplicación normal
+  // Check if admin view
+  if (currentView === 'admin') {
+    return (
+      <AdminLayout onViewAccount={handleViewAccount} activeView={adminView} onNavigate={setAdminView}>
+        <AdminPage key="admin" activeView={adminView} />
+      </AdminLayout>
+    );
+  }
+
   return (
     <BreadcrumbProvider onNavigate={handleBreadcrumbNavigate}>
       <MainLayout
