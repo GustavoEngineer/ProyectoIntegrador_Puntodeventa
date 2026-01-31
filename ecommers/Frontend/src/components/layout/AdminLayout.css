@@ -1,109 +1,81 @@
 :root {
     --admin-sidebar-bg: #ffffff;
-    --admin-bg: #f9f9f9;
-    --primary-black: #1a1a1a;
-    --text-gray: #888888;
+    --admin-bg: var(--background);
+    /* Use global white/beige background intent */
 }
 
 .admin-layout {
     display: flex;
     min-height: 100vh;
     background-color: var(--admin-bg);
-    font-family: 'DM Sans', sans-serif;
-    /* Clean sans-serif */
+    font-family: var(--font-sans);
+    /* Manrope */
 }
 
 /* Sidebar */
 .admin-sidebar {
-    width: 260px;
-    /* Wider for text */
+    width: 80px;
+    /* Collapsed width */
     background-color: var(--admin-sidebar-bg);
     display: flex;
     flex-direction: column;
-    padding: 2rem 1.5rem;
+    padding: 2rem 0;
+    /* Remove horizontal padding */
     height: 100vh;
     box-shadow: 2px 0 20px rgba(0, 0, 0, 0.02);
     position: sticky;
     top: 0;
     z-index: 20;
     box-sizing: border-box;
+    align-items: center;
+    /* Center everything */
 }
 
 .sidebar-nav {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1.5rem;
+    /* More space between icons */
     margin-top: 2rem;
+    width: 100%;
+    align-items: center;
 }
 
 .nav-item {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 0.8rem 1.5rem;
-    border-radius: 99px;
-    /* Pill shape */
-    color: var(--text-gray);
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    /* Rounded square */
+    color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.2s ease;
-    font-weight: 500;
-    font-size: 0.95rem;
+    padding: 0;
 }
 
 .nav-item svg {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
 }
 
 .nav-item:hover {
-    background-color: #f5f5f5;
-    color: var(--primary-black);
+    background-color: var(--background-secondary);
+    /* Beige hover */
+    color: var(--primary-hover);
 }
 
 .nav-item.active {
-    background-color: var(--primary-black);
+    background-color: var(--primary);
+    /* Green active */
     color: white;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(44, 106, 74, 0.2);
 }
 
-/* Sidebar Promo Card */
+/* Sidebar Promo Card - HIDDEN in collapsed mode */
 .sidebar-promo {
-    margin-top: auto;
-    background-color: white;
-    /* Or slight grey if needed */
-    border-radius: 20px;
-    padding: 1.5rem;
-    text-align: center;
-    position: relative;
-    border: 1px solid #f0f0f0;
-}
-
-.sidebar-promo-icon {
-    width: 40px;
-    height: 40px;
-    background: black;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.sidebar-promo h4 {
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.sidebar-promo-img {
-    width: 100%;
-    height: auto;
-    margin-top: 1rem;
+    display: none;
 }
 
 
@@ -123,7 +95,6 @@
     align-items: center;
     padding: 1.5rem 3rem;
     background-color: var(--admin-bg);
-    /* Match bg */
 }
 
 .admin-search {
@@ -134,6 +105,7 @@
     align-items: center;
     width: 350px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.01);
+    border: 1px solid var(--border);
 }
 
 .admin-search input {
@@ -143,6 +115,7 @@
     margin-left: 10px;
     font-size: 0.9rem;
     background: transparent;
+    font-family: var(--font-sans);
 }
 
 .header-right {
@@ -160,11 +133,14 @@
     justify-content: center;
     cursor: pointer;
     background: white;
-    color: #666;
+    color: var(--text-secondary);
+    border: 1px solid transparent;
+    transition: all 0.2s;
 }
 
 .header-icon-btn:hover {
-    background: #f0f0f0;
+    background: var(--background-secondary);
+    color: var(--primary);
 }
 
 .user-profile-widget {
@@ -183,29 +159,27 @@
     display: block;
     font-weight: 700;
     font-size: 0.95rem;
-    color: var(--primary-black);
+    color: var(--text-primary);
 }
 
 .user-role {
     display: block;
     font-size: 0.75rem;
-    color: var(--text-gray);
+    color: var(--text-secondary);
+    font-weight: 500;
 }
 
-.user-avatar {
+.user-avatar-initials {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     overflow: hidden;
-}
-
-.user-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.admin-content {
-    padding: 0 3rem 3rem 3rem;
-    flex: 1;
+    background-color: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
 }
