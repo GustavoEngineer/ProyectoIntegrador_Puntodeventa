@@ -113,6 +113,10 @@ function AppContent() {
       case 'account':
         handleViewAccount();
         break;
+      case 'category':
+        // Pass object to preserve breadcrumb name in CatalogPage
+        handleBackToCatalog({ Id_CategoriaPieza: item.id, Descripcion: item.label });
+        break;
       default:
         console.warn('Unknown breadcrumb type:', item.type);
         handleBackToCatalog();
@@ -168,7 +172,7 @@ function AppContent() {
             onRequireLogin={handleRequireAuth}
           />
         )}
-        {currentView === 'product' && <ProductDetailPage key={selectedProductId} productId={selectedProductId} onBack={handleBackToCatalog} onRequireLogin={handleRequireAuth} />}
+        {currentView === 'product' && <ProductDetailPage key={selectedProductId} productId={selectedProductId} onBack={handleBackToCatalog} onViewProduct={handleViewProduct} onRequireLogin={handleRequireAuth} />}
         {currentView === 'cart' && <CartPage key="cart" onBack={handleBackToCatalog} />}
         {currentView === 'categories' && <CategoriesPage key="categories" onSelectCategory={handleBackToCatalog} />}
         {currentView === 'account' && <AccountPage key="account" />}

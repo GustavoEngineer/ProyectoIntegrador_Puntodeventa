@@ -7,13 +7,17 @@ import StarRating from '../components/common/StarRating';
 import ReviewsSection from '../components/common/ReviewsSection';
 import Breadcrumbs from '../components/common/Breadcrumbs';
 import { useBreadcrumbs } from '../context/BreadcrumbContext';
+import ProductCard from '../components/common/ProductCard';
 import './ProductDetailPage.css';
 
-const ProductDetailPage = ({ productId, onBack, onRequireLogin }) => {
+const ProductDetailPage = ({ productId, onBack, onViewProduct, onRequireLogin }) => {
     const [pieza, setPieza] = useState(null);
     const [loading, setLoading] = useState(true);
     const [cantidad, setCantidad] = useState(1);
     const [activeTab, setActiveTab] = useState('details');
+    const [atributos, setAtributos] = useState([]);
+    const [equiposCompatibles, setEquiposCompatibles] = useState([]);
+    const [relatedProducts, setRelatedProducts] = useState([]);
     const { addToCart } = useCart();
     const { isAuthenticated } = useAuth();
     const { isFavorite, toggleFavorite } = useFavorites();
@@ -21,6 +25,8 @@ const ProductDetailPage = ({ productId, onBack, onRequireLogin }) => {
 
     useEffect(() => {
         fetchPieza();
+        fetchAtributos();
+        fetchEquiposCompatibles();
     }, [productId]);
 
     const fetchPieza = async () => {
@@ -29,10 +35,50 @@ const ProductDetailPage = ({ productId, onBack, onRequireLogin }) => {
             const data = await apiCall(`/piezas/${productId}`);
             setPieza(data);
             pushBreadcrumb({ label: data.Nombre, type: 'product', id: data.Id_Pieza });
+
+            // Fetch related products based on category
+            if (data.Id_CategoriaPieza) {
+                fetchRelatedProducts(data.Id_CategoriaPieza);
+            }
         } catch (err) {
             console.error('Error fetching pieza:', err);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const fetchRelatedProducts = async (categoryId) => {
+        try {
+            // Fetch products from the same category
+            // Fetch all (limit 100) to allow scrolling through remaining items
+            const response = await apiCall(`/piezas?category=${categoryId}&limit=100`);
+
+            // Filter out the current product and ensure we have an array
+            const products = response.data || [];
+            const filtered = products.filter(p => p.Id_Pieza !== parseInt(productId));
+            setRelatedProducts(filtered);
+        } catch (err) {
+            console.error('Error fetching related products:', err);
+        }
+    };
+
+    const fetchAtributos = async () => {
+        try {
+            console.log(`Fetching attributes for product ${productId}...`);
+            const data = await apiCall(`/valor-atributo/pieza/${productId}`);
+            console.log('Attributes received:', data);
+            setAtributos(data);
+        } catch (err) {
+            console.error('Error fetching atributos:', err);
+        }
+    };
+
+    const fetchEquiposCompatibles = async () => {
+        try {
+            const data = await apiCall(`/pieza-equipo/pieza/${productId}`);
+            setEquiposCompatibles(data);
+        } catch (err) {
+            console.error('Error fetching equipos compatibles:', err);
         }
     };
 
@@ -141,23 +187,37 @@ const ProductDetailPage = ({ productId, onBack, onRequireLogin }) => {
                         <div className="product-info-panel">
                             <div className="product-header">
                                 <div className="title-row">
-                                    <div className="title-group">
-                                        <h1 className="product-title">{pieza.Nombre}</h1>
-                                        <button className="wishlist-icon-btn" onClick={handleWishlist} aria-label="Add to wishlist">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill={pieza && isFavorite(pieza.Id_Pieza) ? "#ef4444" : "none"}
-                                                stroke={pieza && isFavorite(pieza.Id_Pieza) ? "#ef4444" : "currentColor"}
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            >
-                                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                                            </svg>
-                                        </button>
+                                    <div className="title-group" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                                        {pieza.Categoria && (
+                                            <span style={{
+                                                fontSize: '0.8rem',
+                                                color: '#9ca3af',
+                                                marginBottom: '0.25rem',
+                                                fontWeight: '600',
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.05em'
+                                            }}>
+                                                {pieza.Categoria}
+                                            </span>
+                                        )}
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                            <h1 className="product-title" style={{ margin: 0 }}>{pieza.Nombre}</h1>
+                                            <button className="wishlist-icon-btn" onClick={handleWishlist} aria-label="Add to wishlist" style={{ display: 'flex' }}>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="20"
+                                                    height="20"
+                                                    viewBox="0 0 24 24"
+                                                    fill={pieza && isFavorite(pieza.Id_Pieza) ? "#ef4444" : "none"}
+                                                    stroke={pieza && isFavorite(pieza.Id_Pieza) ? "#ef4444" : "currentColor"}
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                >
+                                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
                                     </div>
                                     {/* Dynamic Star Rating */}
                                     <div className="product-rating">
@@ -172,10 +232,15 @@ const ProductDetailPage = ({ productId, onBack, onRequireLogin }) => {
                                 {/* Details Middle Section */}
                                 <div className="product-description-middle">
                                     <ul className="details-list">
-                                        <li><strong>Estado:</strong> {pieza.Estado}</li>
-                                        <li><strong>Tipo:</strong> {pieza.Tipo}</li>
-                                        <li><strong>Garantía:</strong> {pieza.Garantia} meses</li>
-                                        <li><strong>Vendor:</strong> Equipos Médicos S.A.</li>
+                                        <li>
+                                            <strong>Equipo Compatible:</strong>{' '}
+                                            {equiposCompatibles.length > 0
+                                                ? equiposCompatibles.map(e => e.NombreEquipo).join(', ')
+                                                : 'N/A'}
+                                        </li>
+                                        <li><strong>Cantidad:</strong> {pieza.Cantidad} unidades</li>
+                                        <li><strong>Tipo de pieza:</strong> {pieza.Tipo}</li>
+                                        <li><strong>Estado de pieza:</strong> {pieza.Estado}</li>
                                     </ul>
                                 </div>
 
@@ -208,12 +273,67 @@ const ProductDetailPage = ({ productId, onBack, onRequireLogin }) => {
                                             Ideal para reparaciones o proyectos académicos.
                                         </p>
                                     </div>
-                                </div>
 
+
+
+                                    <div className="general-table-container" style={{ marginTop: '2rem' }}>
+                                        <h3 style={{ fontSize: '1rem', fontWeight: '600', color: '#111827', marginBottom: '1rem' }}>Información Adicional</h3>
+                                        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                                            <tbody>
+                                                {atributos && atributos.length > 0 ? (
+                                                    atributos.map((attr, index) => (
+                                                        <tr key={index} style={{ borderBottom: '1px solid #e5e7eb' }}>
+                                                            <td style={{ padding: '0.75rem 0', color: '#6b7280', fontWeight: '500', width: '40%' }}>
+                                                                {attr.NombreAtributo || 'Atributo'}
+                                                            </td>
+                                                            <td style={{ padding: '0.75rem 0', color: '#111827' }}>
+                                                                {attr.Valor}
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="2" style={{ padding: '0.75rem 0', color: '#9ca3af', fontStyle: 'italic', textAlign: 'center' }}>
+                                                            No hay información adicional disponible.
+                                                        </td>
+                                                    </tr>
+                                                )}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                {/* Related Products Section */}
+                {relatedProducts.length > 0 && (
+                    <div className="related-products-section" style={{ marginTop: '4rem', paddingBottom: '2rem', borderTop: '1px solid #e5e7eb', paddingTop: '2rem' }}>
+                        <h2 style={{ fontSize: '1.5rem', fontWeight: '600', color: '#111827', marginBottom: '1.5rem' }}>Sigue explorando</h2>
+                        <div style={{
+                            display: 'flex',
+                            overflowX: 'auto',
+                            gap: '1.5rem',
+                            paddingBottom: '1rem',
+                            scrollBehavior: 'smooth',
+                            WebkitOverflowScrolling: 'touch'
+                        }}>
+                            {relatedProducts.map(product => (
+                                <div key={product.Id_Pieza} style={{ minWidth: '240px', maxWidth: '240px' }}>
+                                    <ProductCard
+                                        product={product}
+                                        onViewDetails={() => {
+                                            window.scrollTo(0, 0);
+                                            if (onViewProduct) onViewProduct(product.Id_Pieza);
+                                        }}
+                                        onRequireLogin={onRequireLogin}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
 
             </div>

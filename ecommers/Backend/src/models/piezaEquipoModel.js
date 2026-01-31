@@ -9,6 +9,23 @@ const PiezaEquipo = {
         return data;
     },
 
+    getByPiezaId: async (idPieza) => {
+        const { data, error } = await supabase
+            .from('Pieza_Equipo')
+            .select(`
+                *,
+                Equipo:EquiposCompatibles(Nombre)
+            `)
+            .eq('Id_Pieza', idPieza);
+
+        if (error) throw error;
+
+        return data.map(item => ({
+            ...item,
+            NombreEquipo: item.Equipo?.Nombre
+        }));
+    },
+
     create: async (relation) => {
         const { Id_Pieza, Id_EquipoCompatible } = relation;
         const { data, error } = await supabase

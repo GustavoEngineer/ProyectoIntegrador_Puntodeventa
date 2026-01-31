@@ -47,8 +47,19 @@ const deletePiezaEquipo = async (req, res, next) => {
     }
 };
 
+const getPiezaEquipos = async (req, res, next) => {
+    try {
+        const { idPieza } = req.params;
+        const relations = await PiezaEquipo.getByPiezaId(idPieza);
+        res.json(relations);
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getAllPiezaEquipos,
+    getPiezaEquipos,
     createPiezaEquipo,
     updatePiezaEquipo,
     deletePiezaEquipo
