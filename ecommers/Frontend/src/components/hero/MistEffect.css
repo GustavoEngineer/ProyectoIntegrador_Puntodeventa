@@ -1,0 +1,179 @@
+/* Contenedor principal - sobre todo pero sin bloquear clicks */
+.mist-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+    overflow: hidden;
+}
+
+/* Base de niebla general al fondo */
+.mist-base {
+    position: absolute;
+    bottom: -15%;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: radial-gradient(ellipse at center bottom,
+            rgba(220, 220, 225, 0.8) 0%,
+            rgba(230, 230, 235, 0.5) 40%,
+            transparent 70%);
+    filter: blur(40px);
+    opacity: 0.8;
+    animation: pulseBase 8s ease-in-out infinite alternate;
+}
+
+/* Clusters de humo */
+.smoke-cluster {
+    position: absolute;
+    bottom: 0;
+    width: 50%;
+    height: 80%;
+}
+
+.left-cluster {
+    left: -10%;
+}
+
+.right-cluster {
+    right: -10%;
+}
+
+/* Partículas individuales de humo (Puffs) */
+.smoke-puff {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%,
+            rgba(200, 203, 210, 0.95) 0%,
+            rgba(180, 184, 190, 0.8) 40%,
+            transparent 80%);
+    filter: blur(25px);
+    /* Blur moderado para mantener forma pero suave */
+    opacity: 0.9;
+    will-change: transform, opacity;
+}
+
+/* Posicionamiento y tamaños específicos para crear forma irregular */
+.p1 {
+    width: 60vh;
+    height: 60vh;
+    bottom: -10%;
+    left: -20%;
+    animation: floatPuff1 12s ease-in-out infinite alternate;
+}
+
+.p2 {
+    width: 45vh;
+    height: 45vh;
+    bottom: 20%;
+    left: 10%;
+    opacity: 0.7;
+    background: radial-gradient(circle, rgba(160, 165, 175, 0.6) 0%, transparent 70%);
+    animation: floatPuff2 15s ease-in-out infinite alternate-reverse;
+}
+
+.p3 {
+    width: 30vh;
+    height: 30vh;
+    bottom: 40%;
+    left: -5%;
+    opacity: 0.5;
+    animation: floatPuff3 10s ease-in-out infinite alternate;
+}
+
+.p4 {
+    width: 65vh;
+    height: 65vh;
+    bottom: -15%;
+    right: -25%;
+    animation: floatPuff1 14s ease-in-out infinite alternate-reverse;
+}
+
+.p5 {
+    width: 40vh;
+    height: 40vh;
+    bottom: 25%;
+    right: 15%;
+    opacity: 0.75;
+    background: radial-gradient(circle, rgba(170, 175, 185, 0.7) 0%, transparent 70%);
+    animation: floatPuff2 11s ease-in-out infinite alternate;
+}
+
+.p6 {
+    width: 35vh;
+    height: 35vh;
+    bottom: 45%;
+    right: -5%;
+    opacity: 0.5;
+    animation: floatPuff3 13s ease-in-out infinite alternate-reverse;
+}
+
+/* Animaciones flotantes */
+@keyframes pulseBase {
+    0% {
+        transform: scaleY(1);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scaleY(1.1);
+        opacity: 0.9;
+    }
+}
+
+@keyframes floatPuff1 {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(5%, -5%) scale(1.05);
+    }
+}
+
+@keyframes floatPuff2 {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(-8%, 5%) scale(1.1);
+    }
+}
+
+@keyframes floatPuff3 {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(10%, -10%) scale(1.05);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .smoke-puff {
+        filter: blur(15px);
+        /* Menos blur en móvil */
+    }
+
+    .p1,
+    .p4 {
+        width: 40vh;
+        height: 40vh;
+    }
+
+    .p2,
+    .p5 {
+        width: 30vh;
+        height: 30vh;
+    }
+
+    .p3,
+    .p6 {
+        display: none;
+    }
+
+    /* Reducir carga en móvil */
+}
