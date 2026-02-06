@@ -23,10 +23,6 @@ const ProductCard = ({ product, onViewDetails, onRequireLogin }) => {
 
     const handleAddToCart = (e) => {
         e.stopPropagation();
-        if (!isAuthenticated) {
-            onRequireLogin();
-            return;
-        }
         addToCart(product);
         alert(`${Nombre} agregado al carrito`);
     };
@@ -48,6 +44,13 @@ const ProductCard = ({ product, onViewDetails, onRequireLogin }) => {
                     <div className="card-price-block">
                         <span className="card-price-value">${Precio ? parseFloat(Precio).toFixed(2) : '0.00'}</span>
                     </div>
+                    <button
+                        className="card-add-btn"
+                        onClick={handleAddToCart}
+                        title="Añadir al carrito"
+                    >
+                        Añadir
+                    </button>
                 </div>
             </div>
         </div>

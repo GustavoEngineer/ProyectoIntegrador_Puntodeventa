@@ -78,9 +78,9 @@ export const AuthProvider = ({ children }) => {
         name: `${response.Nombre} ${response.A_Paterno || ''}`,
         email: response.Correo,
         password: response.Contraseña,
-        createdAt: new Date().toISOString(), // Backend no retorna fecha creacion aun, usamos actual
+        createdAt: new Date().toISOString(),
         ...DEFAULT_USER_STRUCTURE,
-        role: response.Id_TipoUsuario === 1 ? 'Administrador' : 'Ingeniero Biomédico'
+        role: [1, 4, 5, 6, 7, 8].includes(Number(response.Id_TipoUsuario)) ? 'Administrador' : 'Ingeniero Biomédico'
       };
 
       setUser(newUser);
@@ -105,7 +105,8 @@ export const AuthProvider = ({ children }) => {
         email: response.Correo,
         password: response.Contraseña,
         ...DEFAULT_USER_STRUCTURE,
-        role: response.Id_TipoUsuario === 1 ? 'Administrador' : 'Ingeniero Biomédico',
+        // Check for multiple admin IDs based on DB table
+        role: [1, 4, 5, 6, 7, 8].includes(Number(response.Id_TipoUsuario)) ? 'Administrador' : 'Ingeniero Biomédico',
         // Si el backend retornara estos datos, los usaríamos
         phone: response.Telefono || DEFAULT_USER_STRUCTURE.phone
       };
@@ -123,29 +124,70 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('mediparts_user');
   };
 
-  // Update profile logic would ideally call backend PUT /usuarios/:id
+  // Actualizar perfil conectando con la API
   const updateProfile = async (updates) => {
     if (!user) {
       throw new Error('No hay usuario autenticado');
     }
 
-    // Simplificando: Solo actualizamos estado local por ahora para no complicar con mapping inverso
-    // En una implementación completa, esto debería llamar a la API
-    const updatedUser = {
-      ...user,
-      ...updates
-    };
-    setUser(updatedUser);
-    return updatedUser;
+    try {
+      // Mapear campos de frontend a backend (PascalCase)
+      const backendPayload = {};
+      if (updates.name) {
+        // Intentar separar nombre y apellido si viene junto, o mandar todo a nombre si es simple
+        const parts = updates.name.split(' ');
+        backendPayload.Nombre = parts[0];
+        if (parts.length > 1) backendPayload.A_Paterno = parts.slice(1).join(' ');
+      }
+      if (updates.email) backendPayload.Correo = updates.email;
+      if (updates.phone) backendPayload.Telefono = updates.phone;
+
+      // Llamada PUT al backend
+      const response = await apiCall(`/usuarios/${user.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(backendPayload)
+      });
+
+      // Actualizar estado local con la respuesta o fusionando cambios
+      // Nota: El backend retorna el usuario actualizado
+
+      const updatedUser = {
+        ...user,
+        name: `${response.Nombre} ${response.A_Paterno || ''}`.trim(),
+        email: response.Correo,
+        phone: response.Telefono || user.phone
+      };
+
+      setUser(updatedUser);
+      return updatedUser;
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      throw error;
+    }
   };
 
-  // Change password logic would ideally call backend
+  // Cambiar contraseña conectando con la API
   const changePassword = async (currentPassword, newPassword) => {
     if (!user) throw new Error('No hay usuario autenticado');
-    // Implementación futura con backend
-    const updatedUser = { ...user, password: newPassword };
-    setUser(updatedUser);
-    return updatedUser;
+
+    try {
+      // Usamos el mismo endpoint de update pero solo mandamos la contraseña
+      // NOTA: Idealmente el backend debería verificar la currentPassword antes.
+      // Como el endpoint updateUsuario actual es genérico, mandamos directo la nueva.
+      // En un sistema real seguro, esto requeriría un endpoint específico /change-password.
+
+      await apiCall(`/usuarios/${user.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ Contraseña: newPassword })
+      });
+
+      const updatedUser = { ...user, password: newPassword };
+      setUser(updatedUser);
+      return updatedUser;
+    } catch (error) {
+      console.error('Error changing password:', error);
+      throw error;
+    }
   };
 
   const addOrder = (order) => {

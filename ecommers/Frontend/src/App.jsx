@@ -163,9 +163,9 @@ function AppContent() {
   // Auth pages (login/register) - no navbar
   if (!isAuthenticated && (currentView === 'login' || currentView === 'register')) {
     if (currentView === 'register') {
-      return <RegisterPage onSwitchToLogin={handleSwitchToLogin} />;
+      return <RegisterPage onSwitchToLogin={handleSwitchToLogin} onBack={handleViewHome} />;
     }
-    return <LoginPage onSwitchToRegister={handleSwitchToRegister} />;
+    return <LoginPage onSwitchToRegister={handleSwitchToRegister} onBack={handleViewHome} />;
   }
 
   // Admin view - different layout
@@ -218,6 +218,7 @@ function AppContent() {
           onViewCart={handleViewCart}
           onViewFavorites={handleViewFavorites}
           onViewHome={handleViewHome}
+          onViewAdmin={() => setCurrentView('admin')}
           onSearch={setSearchQuery}
           searchQuery={searchQuery}
         />

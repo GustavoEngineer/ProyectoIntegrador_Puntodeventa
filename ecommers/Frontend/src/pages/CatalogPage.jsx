@@ -3,6 +3,7 @@ import { apiCall } from '../utils/api';
 import { useBreadcrumbs } from '../context/BreadcrumbContext'; // Import Context
 import ProductCard from '../components/common/ProductCard';
 import Breadcrumbs from '../components/common/Breadcrumbs';
+import FilterSidebar from '../components/catalog/FilterSidebar';
 import './CatalogPage.css';
 
 const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCategory, ...props }) => {
@@ -202,6 +203,10 @@ const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCat
 
     return (
         <div className="catalog-page">
+            <FilterSidebar
+                selectedCategory={selectedCategory}
+                onSelectCategory={onSelectCategory}
+            />
             <div className="catalog-layout">
                 <div className="catalog-content" ref={catalogTopRef}>
                     <div className="catalog-header">

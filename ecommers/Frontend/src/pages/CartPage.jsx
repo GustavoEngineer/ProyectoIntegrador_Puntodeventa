@@ -7,7 +7,7 @@ import Breadcrumbs from '../components/common/Breadcrumbs';
 import './CartPage.css';
 
 const CartPage = ({ onBack }) => {
-    const { cartItems, updateQuantity, removeFromCart, clearCart, getCartTotal } = useCart();
+    const { cartItems, updateQuantity, removeFromCart, clearCart, getCartTotal, getCartCount } = useCart();
     const { addOrder } = useAuth();
     const { breadcrumbs, pushBreadcrumb, handleBreadcrumbClick } = useBreadcrumbs();
     const [isProcessing, setIsProcessing] = useState(false);
@@ -15,6 +15,12 @@ const CartPage = ({ onBack }) => {
     React.useEffect(() => {
         pushBreadcrumb({ label: 'Carrito', type: 'cart' });
     }, []);
+
+    // ... (handlers omitted for brevity if unchanged, but I need to be careful with replace_file_content context)
+    // Actually, I can't easily skip lines in replace_file_content if they are part of the block.
+    // I will do two separate replacements or one larger block if they are close.
+    // They are far apart (line 10 vs 117). I will use multi_replace.
+
 
     const handleQuantityChange = (id_pieza, newQuantity) => {
         if (newQuantity > 0) {
@@ -114,7 +120,7 @@ const CartPage = ({ onBack }) => {
 
             <div className="cart-content-wrapper fade-in">
                 <div className="cart-header">
-                    <h2>Carrito de Compras ({cartItems.length} {cartItems.length === 1 ? 'pieza' : 'piezas'})</h2>
+                    <h2>Carrito de Compras ({getCartCount()} {getCartCount() === 1 ? 'pieza' : 'piezas'})</h2>
                     <div className="cart-header-actions">
                         <Button variant="outline" onClick={onBack}>
                             Seguir comprando

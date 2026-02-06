@@ -22,22 +22,32 @@ const CategoriesPage = ({ onSelectCategory }) => {
     const fetchCategorias = async () => {
         try {
             setLoading(true);
-            const response = await fetch(`${API_URL}/categorias-pieza`);
-            if (!response.ok) throw new Error('Error al cargar categorías');
-            const data = await response.json();
 
-            // Obtener cantidad de piezas por categoría
-            const categoriasConConteo = await Promise.all(
-                data.map(async (cat) => {
-                    const piezasRes = await fetch(`${API_URL}/piezas`);
-                    const piezas = await piezasRes.json();
-                    const count = piezas.filter(p => p.Id_CategoriaPieza === cat.Id_CategoriaPieza).length;
-                    return { ...cat, count };
-                })
-            );
+            // Fetch categories and pieces in parallel
+            const [categoriesRes, piecesRes] = await Promise.all([
+                fetch(`${API_URL}/categorias-pieza`),
+                fetch(`${API_URL}/piezas?limit=1000`) // Fetch enough pieces for counts
+            ]);
+
+            if (!categoriesRes.ok) throw new Error('Error al cargar categorías');
+
+            const categoriesData = await categoriesRes.json();
+            const piecesDataRaw = await piecesRes.json();
+
+            // Handle { data: [...] } structure or direct array
+            const piecesArray = Array.isArray(piecesDataRaw) ? piecesDataRaw : (piecesDataRaw.data || []);
+
+            // Calculate counts in memory
+            const categoriasConConteo = categoriesData.map(cat => {
+                const count = Array.isArray(piecesArray)
+                    ? piecesArray.filter(p => p.Id_CategoriaPieza === cat.Id_CategoriaPieza).length
+                    : 0;
+                return { ...cat, count };
+            });
 
             setCategorias(categoriasConConteo);
         } catch (err) {
+            console.error('Error fetching categories:', err);
             setError(err.message);
         } finally {
             setLoading(false);

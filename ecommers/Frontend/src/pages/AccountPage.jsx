@@ -137,6 +137,13 @@ const AccountPage = () => {
     return (
         <div className="account-page">
             <div className="account-header">
+                <button
+                    onClick={() => window.history.back()}
+                    className="back-nav-button"
+                    style={{ marginBottom: '1rem', border: 'none', background: 'transparent', paddingLeft: 0, boxShadow: 'none' }}
+                >
+                    ← Volver
+                </button>
                 <h1>Mi Cuenta</h1>
                 <p>Gestiona tu información y pedidos</p>
             </div>

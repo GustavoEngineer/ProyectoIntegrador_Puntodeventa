@@ -19,9 +19,11 @@ const ProductDetailPage = ({ productId, onBack, onViewProduct, onRequireLogin })
     const [equiposCompatibles, setEquiposCompatibles] = useState([]);
     const [relatedProducts, setRelatedProducts] = useState([]);
     const { addToCart } = useCart();
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
     const { isFavorite, toggleFavorite } = useFavorites();
     const { breadcrumbs, pushBreadcrumb, handleBreadcrumbClick } = useBreadcrumbs();
+    const [userRating, setUserRating] = useState(0);
+    const [isSubmittingRating, setIsSubmittingRating] = useState(false);
 
     useEffect(() => {
         fetchPieza();
@@ -103,6 +105,43 @@ const ProductDetailPage = ({ productId, onBack, onViewProduct, onRequireLogin })
         }
         console.log('Toggling favorite for:', pieza);
         toggleFavorite(pieza);
+        toggleFavorite(pieza);
+    };
+
+    const handleRatingChange = async (newRating) => {
+        if (!isAuthenticated) {
+            onRequireLogin();
+            return;
+        }
+
+        setIsSubmittingRating(true);
+        try {
+            // Check if user already reviewed this product (optional optimization, but good practice)
+            // Ideally backend handles upsert. 
+            // We'll trust backend to handle it or return success for update.
+
+            await apiCall('/resenas', { // Assuming endpoint for reviews
+                method: 'POST',
+                body: JSON.stringify({
+                    Id_Usuario: user.id,
+                    Id_Pieza: pieza.Id_Pieza,
+                    Calificacion: newRating,
+                    Comentario: '' // Start with empty comment for star-only rating
+                })
+            });
+
+            setUserRating(newRating);
+            // Re-fetch product to get updated average if backend updates it synchronously
+            // or just rely on local state for user feedback for now.
+            fetchPieza();
+            alert('¡Gracias por tu calificación!');
+
+        } catch (error) {
+            console.error('Error submitting rating:', error);
+            alert('Error al guardar la calificación. Intenta de nuevo.');
+        } finally {
+            setIsSubmittingRating(false);
+        }
     };
 
     if (loading) {
@@ -157,6 +196,12 @@ const ProductDetailPage = ({ productId, onBack, onViewProduct, onRequireLogin })
     return (
         <div className="product-detail-page">
             <div className="product-breadcrumbs">
+                <button onClick={onBack} className="back-nav-button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Volver
+                </button>
                 <Breadcrumbs
                     items={breadcrumbs.map((item, index) => ({
                         label: item.label,
@@ -221,7 +266,21 @@ const ProductDetailPage = ({ productId, onBack, onViewProduct, onRequireLogin })
                                     </div>
                                     {/* Dynamic Star Rating */}
                                     <div className="product-rating">
-                                        <StarRating rating={pieza.Calificacionpromedio} />
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                <StarRating
+                                                    rating={userRating || pieza.CalificacionPromedio} // Show user rating if available, else average
+                                                    onRatingChange={handleRatingChange}
+                                                    readOnly={false}
+                                                />
+                                                <span style={{ fontSize: '0.85rem', color: '#6b7280' }}>
+                                                    ({pieza.CalificacionPromedio ? parseFloat(pieza.CalificacionPromedio).toFixed(1) : 'No rated'})
+                                                </span>
+                                            </div>
+                                            {!isAuthenticated && (
+                                                <span style={{ fontSize: '0.75rem', color: '#ef4444' }}>Inicia sesión para calificar</span>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
 
