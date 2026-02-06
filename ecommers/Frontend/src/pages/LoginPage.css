@@ -215,6 +215,46 @@
   color: #4b5563;
 }
 
+/* Form Options (Remember Me & Forgot Password) */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-container input {
+  width: auto;
+  cursor: pointer;
+}
+
+/* Custom checkmark span if needed, but input is enough for basic */
+.checkmark {
+  font-weight: 500;
+}
+
+.forgot-password {
+  color: #6b7280;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.forgot-password:hover {
+  color: #111827;
+  text-decoration: underline;
+}
+
 .login-button {
   padding: 1rem;
   background-color: #000000;
