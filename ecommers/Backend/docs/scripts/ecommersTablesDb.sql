@@ -52,7 +52,6 @@ CREATE TABLE "Pieza" (
   "Id_CategoriaPieza" INTEGER NOT NULL,
   "Id_EstadoPieza" INTEGER NOT NULL,
   "Id_TipoPieza" INTEGER NOT NULL,
-  "CalificacionPromedio" NUMERIC(2,1) CHECK ("CalificacionPromedio" >= 1.0 AND "CalificacionPromedio" <= 5.0),
   CONSTRAINT fk_categoria FOREIGN KEY ("Id_CategoriaPieza") REFERENCES "CategoriaPieza"("Id_CategoriaPieza") ON DELETE RESTRICT,
   CONSTRAINT fk_estado FOREIGN KEY ("Id_EstadoPieza") REFERENCES "EstadoPieza"("Id_EstadoPieza") ON DELETE RESTRICT,
   CONSTRAINT fk_tipo FOREIGN KEY ("Id_TipoPieza") REFERENCES "TipoPieza"("Id_TipoPieza") ON DELETE RESTRICT
@@ -131,16 +130,4 @@ CREATE TABLE "Carrito" (
   PRIMARY KEY ("Id_Usuario", "Id_Pieza"),
   CONSTRAINT fk_usuario_cart FOREIGN KEY ("Id_Usuario") REFERENCES "Usuario"("Id_Usuario") ON DELETE CASCADE,
   CONSTRAINT fk_pieza_cart FOREIGN KEY ("Id_Pieza") REFERENCES "Pieza"("Id_Pieza") ON DELETE CASCADE
-);
-
--- 16. Reseña
-CREATE TABLE "Reseña" (
-  "Id_Usuario" INTEGER NOT NULL,
-  "Id_Pieza" INTEGER NOT NULL,
-  "Calificacion" SMALLINT NOT NULL CHECK ("Calificacion" BETWEEN 1 AND 5),
-  "Comentario" TEXT,
-  "Fecha" TIMESTAMPTZ DEFAULT NOW(),
-  PRIMARY KEY ("Id_Usuario", "Id_Pieza"),
-  CONSTRAINT fk_usuario_resena FOREIGN KEY ("Id_Usuario") REFERENCES "Usuario"("Id_Usuario") ON DELETE CASCADE,
-  CONSTRAINT fk_pieza_resena FOREIGN KEY ("Id_Pieza") REFERENCES "Pieza"("Id_Pieza") ON DELETE CASCADE
 );

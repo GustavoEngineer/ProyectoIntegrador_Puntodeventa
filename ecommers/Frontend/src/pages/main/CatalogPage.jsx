@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import { apiCall } from '../utils/api';
-import { useBreadcrumbs } from '../context/BreadcrumbContext'; // Import Context
-import ProductCard from '../components/common/ProductCard';
-import Breadcrumbs from '../components/common/Breadcrumbs';
-import FilterSidebar from '../components/catalog/FilterSidebar';
+import { apiCall } from '../../utils/api';
+import { useBreadcrumbs } from '../../context/BreadcrumbContext'; // Import Context
+import ProductCard from '../../components/common/ProductCard';
+import Breadcrumbs from '../../components/common/Breadcrumbs';
+import FilterSidebar from '../../components/catalog/FilterSidebar';
 import './CatalogPage.css';
 
 const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCategory, ...props }) => {

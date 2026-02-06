@@ -1,8 +1,8 @@
 import React from 'react';
-import { useFavorites } from '../context/FavoritesContext';
-import { useCart } from '../context/CartContext';
-import { useBreadcrumbs } from '../context/BreadcrumbContext';
-import Breadcrumbs from '../components/common/Breadcrumbs';
+import { useFavorites } from '../../context/FavoritesContext';
+import { useCart } from '../../context/CartContext';
+import { useBreadcrumbs } from '../../context/BreadcrumbContext';
+import Breadcrumbs from '../../components/common/Breadcrumbs';
 import './FavoritesPage.css';
 
 const FavoritesPage = ({ onViewProduct, onBack }) => {

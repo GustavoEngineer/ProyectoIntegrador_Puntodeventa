@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
-import { useFavorites } from '../context/FavoritesContext';
-import { apiCall } from '../utils/api';
-import StarRating from '../components/common/StarRating';
-import ReviewsSection from '../components/common/ReviewsSection';
-import Breadcrumbs from '../components/common/Breadcrumbs';
-import { useBreadcrumbs } from '../context/BreadcrumbContext';
-import ProductCard from '../components/common/ProductCard';
+import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
+import { useFavorites } from '../../context/FavoritesContext';
+import { apiCall } from '../../utils/api';
+import StarRating from '../../components/common/StarRating';
+import ReviewsSection from '../../components/common/ReviewsSection';
+import Breadcrumbs from '../../components/common/Breadcrumbs';
+import { useBreadcrumbs } from '../../context/BreadcrumbContext';
+import ProductCard from '../../components/common/ProductCard';
 import './ProductDetailPage.css';
 
 const ProductDetailPage = ({ productId, onBack, onViewProduct, onRequireLogin }) => {

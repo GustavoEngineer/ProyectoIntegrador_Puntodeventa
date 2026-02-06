@@ -64,7 +64,7 @@ ProductCard.propTypes = {
         Descripcion: PropTypes.string,
         Precio: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         Cantidad: PropTypes.number,
-        Garantia: PropTypes.string,
+        Garantia: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         ImagenUrl: PropTypes.string,
         Categoria: PropTypes.string,
         Estado: PropTypes.string,

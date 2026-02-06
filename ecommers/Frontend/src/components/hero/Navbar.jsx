@@ -9,7 +9,7 @@ export default function Navbar({
     onViewCart,
     onViewFavorites,
     onViewHome,
-    onViewAdmin,
+
     onSearch,
     searchQuery
 }) {
@@ -132,20 +132,7 @@ export default function Navbar({
                                         </svg>
                                         Configuración
                                     </button>
-                                    {['Administrador', 'Admin', 'admin'].includes(user?.role) && (
-                                        <button className="dropdown-item" onClick={() => {
-                                            if (onViewAdmin) onViewAdmin();
-                                            setShowUserMenu(false);
-                                        }}>
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <rect x="3" y="3" width="7" height="7"></rect>
-                                                <rect x="14" y="3" width="7" height="7"></rect>
-                                                <rect x="14" y="14" width="7" height="7"></rect>
-                                                <rect x="3" y="14" width="7" height="7"></rect>
-                                            </svg>
-                                            Panel Admin
-                                        </button>
-                                    )}
+
                                     <button className="dropdown-item logout" onClick={handleLogout}>
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>

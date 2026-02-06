@@ -7,18 +7,18 @@ import { BreadcrumbProvider } from './context/BreadcrumbContext';
 import Navbar from './components/hero/Navbar';
 
 // Layouts
-import AdminLayout from './components/layout/AdminLayout';
+
 
 // Pages
-import CatalogPage from './pages/CatalogPage';
-import ProductDetailPage from './pages/ProductDetailPage';
-import CartPage from './pages/CartPage';
-import CategoriesPage from './pages/CategoriesPage';
-import AccountPage from './pages/AccountPage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import FavoritesPage from './pages/FavoritesPage';
-import AdminPage from './pages/admin/AdminPage';
+import CatalogPage from './pages/main/CatalogPage';
+import ProductDetailPage from './pages/main/ProductDetailPage';
+import CartPage from './pages/shopping-cart/CartPage';
+import CategoriesPage from './pages/main/CategoriesPage';
+import AccountPage from './pages/settings/AccountPage';
+import LoginPage from './pages/main/LoginPage';
+import RegisterPage from './pages/main/RegisterPage';
+import FavoritesPage from './pages/favorites/FavoritesPage';
+
 
 // Hero section for home
 import HeroSection from './components/hero/HeroSection';
@@ -32,16 +32,14 @@ function AppContent() {
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [adminView, setAdminView] = useState(() => localStorage.getItem('app_adminView') || 'Home');
+
 
   // Persist Navigation State
   useEffect(() => {
     localStorage.setItem('app_currentView', currentView);
   }, [currentView]);
 
-  useEffect(() => {
-    localStorage.setItem('app_adminView', adminView);
-  }, [adminView]);
+
 
   // Handle auth state changes
   useEffect(() => {
@@ -49,15 +47,11 @@ function AppContent() {
 
     // If logged in and on auth pages, go back to home (not catalog)
     if (isAuthenticated && (currentView === 'login' || currentView === 'register')) {
-      if (user?.role === 'Administrador') {
-        setCurrentView('admin');
-      } else {
-        setCurrentView('home'); // Always stay in home to keep navbar
-      }
+      setCurrentView('home'); // Always stay in home to keep navbar
     }
 
     // If logged out and on protected pages, go to home
-    const protectedViews = ['cart', 'account', 'favorites', 'admin'];
+    const protectedViews = ['cart', 'account', 'favorites'];
     if (!isAuthenticated && protectedViews.includes(currentView)) {
       setCurrentView('home');
     }
@@ -168,14 +162,7 @@ function AppContent() {
     return <LoginPage onSwitchToRegister={handleSwitchToRegister} onBack={handleViewHome} />;
   }
 
-  // Admin view - different layout
-  if (currentView === 'admin') {
-    return (
-      <AdminLayout onViewAccount={handleViewAccount} activeView={adminView} onNavigate={setAdminView}>
-        <AdminPage key="admin" activeView={adminView} />
-      </AdminLayout>
-    );
-  }
+
 
   // All other views - use unified navbar + content
   const renderContent = () => {
@@ -218,7 +205,7 @@ function AppContent() {
           onViewCart={handleViewCart}
           onViewFavorites={handleViewFavorites}
           onViewHome={handleViewHome}
-          onViewAdmin={() => setCurrentView('admin')}
+
           onSearch={setSearchQuery}
           searchQuery={searchQuery}
         />

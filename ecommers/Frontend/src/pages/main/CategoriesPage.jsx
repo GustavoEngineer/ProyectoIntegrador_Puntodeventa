@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useBreadcrumbs } from '../context/BreadcrumbContext';
-import Breadcrumbs from '../components/common/Breadcrumbs';
+import { useBreadcrumbs } from '../../context/BreadcrumbContext';
+import Breadcrumbs from '../../components/common/Breadcrumbs';
 import './CategoriesPage.css';
 
 const API_URL = 'http://localhost:3000/api';

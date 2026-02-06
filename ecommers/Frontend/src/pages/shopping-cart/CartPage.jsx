@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
-import { useBreadcrumbs } from '../context/BreadcrumbContext';
-import Button from '../components/common/Button';
-import Breadcrumbs from '../components/common/Breadcrumbs';
+import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
+import { useBreadcrumbs } from '../../context/BreadcrumbContext';
+import Button from '../../components/common/Button';
+import Breadcrumbs from '../../components/common/Breadcrumbs';
 import './CartPage.css';
 
 const CartPage = ({ onBack }) => {

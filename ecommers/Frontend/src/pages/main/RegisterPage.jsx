@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import './RegisterPage.css';
-import RhombusLogo from '../components/3d/RhombusLogo';
+import RhombusLogo from '../../components/3d/RhombusLogo';
 
 const RegisterPage = ({ onSwitchToLogin, onBack }) => {
   const { register } = useAuth();
