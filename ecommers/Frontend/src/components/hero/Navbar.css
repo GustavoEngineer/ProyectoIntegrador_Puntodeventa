@@ -116,22 +116,65 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
+    width: auto;
+    min-width: 40px;
+    /* Ensure circle when collapsed */
     height: 40px;
+    padding: 0;
     background: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 50%;
+    border-radius: 50px;
+    /* Always pill (circle when width=height) */
     color: #333;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    overflow: hidden;
+    /* Clip content */
 }
 
 .nav-action-btn:hover {
     background: rgba(255, 255, 255, 0.9);
-    transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding-right: 18px;
+    /* Add padding for text balance */
+    padding-left: 14px;
+    /* Slight adjust for icon center visual */
+}
+
+/* Tooltips turned into Inline Labels */
+.tooltip-text {
+    /* Reset absolute positioning */
+    position: static;
+    transform: none;
+    background: none;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    pointer-events: auto;
+
+    /* Animation props */
+    max-width: 0;
+    opacity: 0;
+    margin-left: 0;
+    white-space: nowrap;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Remove arrow */
+.tooltip-text::before {
+    display: none;
+}
+
+.nav-action-btn:hover .tooltip-text {
+    max-width: 100px;
+    opacity: 1;
+    margin-left: 8px;
+    transform: none;
+    visibility: visible;
 }
 
 /* Cart Badge */
