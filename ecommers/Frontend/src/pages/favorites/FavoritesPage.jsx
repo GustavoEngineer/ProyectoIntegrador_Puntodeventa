@@ -1,7 +1,7 @@
 import React from 'react';
-import { useFavorites } from '../../context/FavoritesContext';
-import { useCart } from '../../context/CartContext';
-import { useBreadcrumbs } from '../../context/BreadcrumbContext';
+import { useFavorites } from './context/FavoritesContext';
+import { useCart } from '../shopping-cart/context/CartContext';
+import { useBreadcrumbs } from '../main/context/BreadcrumbContext';
 import Breadcrumbs from '../../components/common/Breadcrumbs';
 import './FavoritesPage.css';
 
@@ -117,10 +117,14 @@ const FavoritesPage = ({ onViewProduct, onBack }) => {
                                         <td>
                                             <div className="product-cell-content">
                                                 <img
-                                                    src={product.ImagenUrl || 'https://via.placeholder.com/80'}
+                                                    src={product.ImagenUrl || 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=100&q=80'}
                                                     alt={product.Nombre}
                                                     className="product-thumb"
                                                     onClick={() => onViewProduct(product.Id_Pieza)}
+                                                    onError={(e) => {
+                                                        e.target.onerror = null;
+                                                        e.target.src = 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=100&q=80';
+                                                    }}
                                                     style={{ cursor: 'pointer' }}
                                                 />
                                                 <div className="product-details">

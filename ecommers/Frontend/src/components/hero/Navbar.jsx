@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useCart } from '../../context/CartContext';
-import { useAuth } from '../../context/AuthContext';
+import { useCart } from '../../pages/shopping-cart/context/CartContext';
+import { useAuth } from '../../pages/main/context/AuthContext';
 import './Navbar.css';
 
 export default function Navbar({

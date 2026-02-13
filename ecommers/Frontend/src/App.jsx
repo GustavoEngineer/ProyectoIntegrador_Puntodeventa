@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from './context/AuthContext';
-import { FavoritesProvider } from './context/FavoritesContext';
-import { BreadcrumbProvider } from './context/BreadcrumbContext';
+import { useAuth } from './pages/main/context/AuthContext';
+import { FavoritesProvider } from './pages/favorites/context/FavoritesContext';
+import { BreadcrumbProvider } from './pages/main/context/BreadcrumbContext';
 
 // Nuevo navbar unificado
 import Navbar from './components/hero/Navbar';
@@ -13,7 +13,6 @@ import Navbar from './components/hero/Navbar';
 import CatalogPage from './pages/main/CatalogPage';
 import ProductDetailPage from './pages/main/ProductDetailPage';
 import CartPage from './pages/shopping-cart/CartPage';
-import CategoriesPage from './pages/main/CategoriesPage';
 import AccountPage from './pages/settings/AccountPage';
 import LoginPage from './pages/main/LoginPage';
 import RegisterPage from './pages/main/RegisterPage';
@@ -29,15 +28,31 @@ import './App.css';
 function AppContent() {
   const { isAuthenticated, isLoading, user } = useAuth();
   const [currentView, setCurrentView] = useState(() => localStorage.getItem('app_currentView') || 'home');
-  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [selectedProductId, setSelectedProductId] = useState(() => {
+    const savedId = localStorage.getItem('app_selectedProductId');
+    return savedId ? Number(savedId) : null;
+  });
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedEquipo, setSelectedEquipo] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
 
   // Persist Navigation State
   useEffect(() => {
     localStorage.setItem('app_currentView', currentView);
-  }, [currentView]);
+    if (selectedProductId) {
+      localStorage.setItem('app_selectedProductId', selectedProductId);
+    } else {
+      localStorage.removeItem('app_selectedProductId');
+    }
+  }, [currentView, selectedProductId]);
+
+  // Safety check for inconsistent state (e.g. refresh on product view without ID)
+  useEffect(() => {
+    if (currentView === 'product' && !selectedProductId) {
+      setCurrentView('home');
+    }
+  }, [currentView, selectedProductId]);
 
 
 
@@ -75,10 +90,6 @@ function AppContent() {
     setCurrentView('cart');
   };
 
-  const handleViewCategories = () => {
-    setCurrentView('categories');
-  };
-
   const handleViewAccount = () => {
     if (!isAuthenticated) {
       handleRequireAuth();
@@ -106,6 +117,7 @@ function AppContent() {
     setCurrentView('home');
     setSelectedProductId(null);
     setSelectedCategory(null);
+    setSelectedEquipo(null);
     // Scroll to top smoothly
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -179,8 +191,6 @@ function AppContent() {
         );
       case 'cart':
         return <CartPage key="cart" onBack={handleBackToCatalog} />;
-      case 'categories':
-        return <CategoriesPage key="categories" onSelectCategory={handleBackToCatalog} />;
       case 'account':
         return <AccountPage key="account" />;
       case 'favorites':
@@ -229,8 +239,24 @@ function AppContent() {
                 }}
                 onSelectCategory={(category) => {
                   setSelectedCategory(category);
-                  setCurrentView('categories');
+                  // Stay on home view for immediate filtering
+                  const catalogSection = document.getElementById('catalog-section');
+                  if (catalogSection) {
+                    catalogSection.scrollIntoView({ behavior: 'smooth' });
+                  }
                 }}
+                selectedCategory={selectedCategory} // Pass the selected category
+
+                onSelectEquipo={(equipo) => {
+                  setSelectedEquipo(equipo);
+                  // Stay on home/catalog
+                  const catalogSection = document.getElementById('catalog-section');
+                  if (catalogSection) {
+                    catalogSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                selectedEquipo={selectedEquipo}
+
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
               />

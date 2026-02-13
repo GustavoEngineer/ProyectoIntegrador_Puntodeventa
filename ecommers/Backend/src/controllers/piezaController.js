@@ -5,9 +5,10 @@ const getAllPiezas = async (req, res, next) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 25;
         const categoryId = req.query.category;
+        const equipoId = req.query.equipo;
         const searchQuery = req.query.search;
 
-        const { data, count } = await Pieza.getAll(page, limit, { categoryId, searchQuery });
+        const { data, count } = await Pieza.getAll(page, limit, { categoryId, equipoId, searchQuery });
 
         res.json({
             data,

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useAuth } from '../../context/AuthContext';
-import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../pages/main/context/AuthContext';
+import { useCart } from '../../pages/shopping-cart/context/CartContext';
 import Button from './Button';
 import StarRating from './StarRating';
 import './ProductCard.css';
@@ -19,7 +19,11 @@ const ProductCard = ({ product, onViewDetails, onRequireLogin }) => {
         Calificacionpromedio,
     } = product;
 
-    const imageUrl = ImagenUrl || 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=500&q=80';
+    const isValidUrl = (url) => {
+        return url && (url.startsWith('http') || url.startsWith('/'));
+    };
+
+    const imageUrl = isValidUrl(ImagenUrl) ? ImagenUrl : 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=500&q=80';
 
     const handleAddToCart = (e) => {
         e.stopPropagation();

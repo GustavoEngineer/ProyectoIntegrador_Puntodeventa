@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { useAuth } from './AuthContext';
-import { apiCall } from '../utils/api';
+import { useAuth } from '../../main/context/AuthContext';
+import { apiCall } from '../../../utils/api';
 
 const FavoritesContext = createContext();
 
@@ -53,7 +53,12 @@ export const FavoritesProvider = ({ children }) => {
             return;
         }
 
-        setFavorites((prev) => [...prev, newItem]);
+        setFavorites((prev) => {
+            if (prev.some(fav => (fav.Id_Pieza || fav.PiezaID) === newItem.Id_Pieza)) {
+                return prev;
+            }
+            return [...prev, newItem];
+        });
 
         try {
             console.log('Sending API request to add favorite...');

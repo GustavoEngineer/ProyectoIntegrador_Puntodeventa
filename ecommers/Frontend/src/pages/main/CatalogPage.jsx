@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { apiCall } from '../../utils/api';
-import { useBreadcrumbs } from '../../context/BreadcrumbContext'; // Import Context
+import { useBreadcrumbs } from './context/BreadcrumbContext'; // Import Context
 import ProductCard from '../../components/common/ProductCard';
 import Breadcrumbs from '../../components/common/Breadcrumbs';
 import FilterSidebar from '../../components/catalog/FilterSidebar';
 import './CatalogPage.css';
 
-const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCategory, ...props }) => {
+const CatalogPage = ({ onViewProduct, selectedCategory, selectedEquipo, onSelectCategory, onSelectEquipo, searchQuery, ...props }) => {
     const [piezas, setPiezas] = useState([]);
     const [filteredPiezas, setFilteredPiezas] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -19,7 +19,7 @@ const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCat
     const pageCache = useRef({});
     const { breadcrumbs, resetBreadcrumbs, handleBreadcrumbClick, pushBreadcrumb } = useBreadcrumbs();
 
-    // Reset breadcrumbs on mount and update if category is selected
+    // Reset breadcrumbs on mount and update if category/equipo is selected
     useEffect(() => {
         resetBreadcrumbs();
 
@@ -28,18 +28,6 @@ const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCat
             const catId = (typeof selectedCategory === 'object') ? selectedCategory.Id_CategoriaPieza : selectedCategory;
 
             if (catName) {
-                // If we have a name, add it to breadcrumbs
-                // We use a slight delay or just push immediately after reset. 
-                // Since resetBreadcrumbs is state update, pushBreadcrumb might need to wait or rely on ordering.
-                // Actually Context state updates are batched/async usually. 
-                // But reset setBreadcrumbs([...]). push does setBreadcrumbs(prev => ...).
-                // So they should sequence correctly if called effectively.
-
-                // However, resetBreadcrumbs sets state. pushBreadcrumbs uses functional update.
-                // So if reset is called, it sets state. Push reads previous state (which might be the old one if not updated yet? No, functional update reads pending state logic applied? No, it reads current state at time of execution of callback).
-
-                // Better approach: resetBreadcrumbs resets to Home.
-                // Then we push.
                 pushBreadcrumb({
                     label: catName,
                     type: 'category',
@@ -48,22 +36,26 @@ const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCat
                 });
             }
         }
-    }, [selectedCategory]);
+
+        // FUTURE: Handle breadcrumb for Equipo as well if needed, allowing complex breadcrumb trails
+    }, [selectedCategory, selectedEquipo]);
 
     // Reset page to 1 when filters change
     useEffect(() => {
         setCurrentPage(1);
         pageCache.current = {}; // Clear cache on filter change
-    }, [selectedCategory, searchQuery]);
+    }, [selectedCategory, selectedEquipo, searchQuery]);
 
     // Fetch Piezas effect
     useEffect(() => {
         const catId = (selectedCategory && typeof selectedCategory === 'object') ? selectedCategory.Id_CategoriaPieza : selectedCategory;
-        fetchPiezas(currentPage, catId, searchQuery);
-    }, [currentPage, selectedCategory, searchQuery, retryCount]);
+        const eqId = (selectedEquipo && typeof selectedEquipo === 'object') ? selectedEquipo.Id_EquipoCompatible : selectedEquipo;
 
-    const fetchPiezas = async (page, category, search) => {
-        const cacheKey = `${page}-${category || ''}-${search || ''}`;
+        fetchPiezas(currentPage, catId, eqId, searchQuery);
+    }, [currentPage, selectedCategory, selectedEquipo, searchQuery, retryCount]);
+
+    const fetchPiezas = async (page, category, equipo, search) => {
+        const cacheKey = `${page}-${category || ''}-${equipo || ''}-${search || ''}`;
 
         // Check cache first
         if (pageCache.current[cacheKey]) {
@@ -83,6 +75,7 @@ const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCat
                 limit: LIMIT
             });
             if (category) params.append('category', category);
+            if (equipo) params.append('equipo', equipo);
             if (search) params.append('search', search);
 
             // Fetch pieces with pagination
@@ -206,6 +199,8 @@ const CatalogPage = ({ onViewProduct, selectedCategory, searchQuery, onSelectCat
             <FilterSidebar
                 selectedCategory={selectedCategory}
                 onSelectCategory={onSelectCategory}
+                selectedEquipo={selectedEquipo}
+                onSelectEquipo={onSelectEquipo}
             />
             <div className="catalog-layout">
                 <div className="catalog-content" ref={catalogTopRef}>

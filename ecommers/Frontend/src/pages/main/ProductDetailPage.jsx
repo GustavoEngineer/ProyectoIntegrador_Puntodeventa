@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useCart } from '../../context/CartContext';
-import { useAuth } from '../../context/AuthContext';
-import { useFavorites } from '../../context/FavoritesContext';
+import { useCart } from '../shopping-cart/context/CartContext';
+import { useAuth } from './context/AuthContext';
+import { useFavorites } from '../favorites/context/FavoritesContext';
 import { apiCall } from '../../utils/api';
 import StarRating from '../../components/common/StarRating';
 import ReviewsSection from '../../components/common/ReviewsSection';
 import Breadcrumbs from '../../components/common/Breadcrumbs';
-import { useBreadcrumbs } from '../../context/BreadcrumbContext';
+import { useBreadcrumbs } from './context/BreadcrumbContext';
 import ProductCard from '../../components/common/ProductCard';
 import './ProductDetailPage.css';
 
@@ -105,7 +105,7 @@ const ProductDetailPage = ({ productId, onBack, onViewProduct, onRequireLogin })
         }
         console.log('Toggling favorite for:', pieza);
         toggleFavorite(pieza);
-        toggleFavorite(pieza);
+
     };
 
     const handleRatingChange = async (newRating) => {
@@ -191,7 +191,14 @@ const ProductDetailPage = ({ productId, onBack, onViewProduct, onRequireLogin })
     }
     if (!pieza) return <div className="product-detail-error">No encontrado <button onClick={onBack}>Volver</button></div>;
 
-    const imageUrl = pieza.ImagenUrl || 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=500&q=80';
+    const isValidUrl = (url) => {
+        try {
+            return url && (url.startsWith('http') || url.startsWith('/'));
+        } catch (e) {
+            return false;
+        }
+    };
+    const imageUrl = isValidUrl(pieza.ImagenUrl) ? pieza.ImagenUrl : 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=500&q=80';
 
     return (
         <div className="product-detail-page">
@@ -216,7 +223,15 @@ const ProductDetailPage = ({ productId, onBack, onViewProduct, onRequireLogin })
                         {/* Left Column: Image */}
                         <div className="product-gallery">
                             <div className="main-image-container">
-                                <img src={imageUrl} alt={pieza.Nombre} className="main-image" />
+                                <img
+                                    src={imageUrl}
+                                    alt={pieza.Nombre}
+                                    className="main-image"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=500&q=80';
+                                    }}
+                                />
                                 <div className="gallery-dots">
                                     <span className="dot active"></span>
                                 </div>

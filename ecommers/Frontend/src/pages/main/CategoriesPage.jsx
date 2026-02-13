@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useBreadcrumbs } from '../../context/BreadcrumbContext';
+import { useBreadcrumbs } from './context/BreadcrumbContext';
 import Breadcrumbs from '../../components/common/Breadcrumbs';
 import './CategoriesPage.css';
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { apiCall } from '../../utils/api';
-import { useCart } from '../../context/CartContext';
-import { useAuth } from '../../context/AuthContext';
+import { useCart } from '../../pages/shopping-cart/context/CartContext';
+import { useAuth } from '../../pages/main/context/AuthContext';
 import Button from '../common/Button';
 import './Header.css';
 

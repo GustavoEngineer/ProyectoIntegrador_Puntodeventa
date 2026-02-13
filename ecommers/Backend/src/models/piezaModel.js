@@ -18,6 +18,26 @@ const Pieza = {
             query = query.eq('Id_CategoriaPieza', filters.categoryId);
         }
 
+        // Filter by Compatible Equipment
+        if (filters.equipoId) {
+            // We use !inner to perform an INNER JOIN, effectively filtering Piezas that have this specific relation
+            // However, Supabase syntax for filtering on related tables usually requires structuring the select differently 
+            // or using proper embedding filtering.
+            // Standard way: .select('*, Pieza_Equipo!inner(Id_EquipoCompatible)') .eq('Pieza_Equipo.Id_EquipoCompatible', id)
+
+            // We must preserve the other relations in the select string
+            query = supabase
+                .from('Pieza')
+                .select(`
+                    *,
+                    Categoria:CategoriaPieza(Descripcion),
+                    Estado:EstadoPieza(Descripcion),
+                    Tipo:TipoPieza(Descripcion),
+                    Pieza_Equipo!inner(Id_EquipoCompatible)
+                `, { count: 'exact' })
+                .eq('Pieza_Equipo.Id_EquipoCompatible', filters.equipoId);
+        }
+
         if (filters.searchQuery) {
             query = query.ilike('Nombre', `%${filters.searchQuery}%`);
         }
@@ -27,12 +47,18 @@ const Pieza = {
         if (error) throw error;
 
         // Map to match original flattened structure
-        const mappedData = data.map(p => ({
-            ...p,
-            Categoria: p.Categoria?.Descripcion,
-            Estado: p.Estado?.Descripcion,
-            Tipo: p.Tipo?.Descripcion
-        }));
+        const mappedData = data.map(p => {
+            // Remove the extra Pieza_Equipo property from the result object if we want to keep it clean, 
+            // though it might not hurt to leave it.
+            // But existing frontend expects specific structure.
+            const { Pieza_Equipo, ...rest } = p;
+            return {
+                ...rest,
+                Categoria: p.Categoria?.Descripcion,
+                Estado: p.Estado?.Descripcion,
+                Tipo: p.Tipo?.Descripcion
+            };
+        });
 
         return { data: mappedData, count };
     },

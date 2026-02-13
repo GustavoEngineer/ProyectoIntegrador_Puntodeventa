@@ -2,35 +2,50 @@ import React, { useState, useEffect } from 'react';
 import { apiCall } from '../../utils/api';
 import './FilterSidebar.css';
 
-const FilterSidebar = ({ selectedCategory, onSelectCategory }) => {
+const FilterSidebar = ({ selectedCategory, onSelectCategory, selectedEquipo, onSelectEquipo }) => {
     const [categories, setCategories] = useState([]);
+    const [equipos, setEquipos] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchCategories = async () => {
+        const fetchData = async () => {
             try {
-                // Endpoint real del backend que verificamos anteriormente
-                const data = await apiCall('/categorias-pieza');
-                // Si el backend devuelve array directo o data envuelta, asegurar array
-                const categoriesArray = Array.isArray(data) ? data : (data.data || []);
+                // Fetch Categories and Equipos in parallel
+                const [catsData, equiposData] = await Promise.all([
+                    apiCall('/categorias-pieza'),
+                    apiCall('/equipos-compatibles')
+                ]);
+
+                // Ensure arrays
+                const categoriesArray = Array.isArray(catsData) ? catsData : (catsData.data || []);
+                const equiposArray = Array.isArray(equiposData) ? equiposData : (equiposData.data || []);
+
                 setCategories(categoriesArray);
+                setEquipos(equiposArray);
             } catch (error) {
-                console.error('Error fetching categories:', error);
+                console.error('Error fetching filters:', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchCategories();
+        fetchData();
     }, []);
 
     // Helper para saber si una categoría es la activa
-    const isActive = (cat) => {
-        // Manejar caso donde selectedCategory es ID o Objeto
+    const isActiveCategory = (cat) => {
         const selectedId = (selectedCategory && typeof selectedCategory === 'object')
             ? selectedCategory.Id_CategoriaPieza
             : selectedCategory;
         return selectedId === cat.Id_CategoriaPieza;
+    };
+
+    // Helper for active equipment
+    const isActiveEquipo = (eq) => {
+        const selectedId = (selectedEquipo && typeof selectedEquipo === 'object')
+            ? selectedEquipo.Id_EquipoCompatible
+            : selectedEquipo;
+        return selectedId === eq.Id_EquipoCompatible;
     };
 
     return (
@@ -41,8 +56,8 @@ const FilterSidebar = ({ selectedCategory, onSelectCategory }) => {
             {/* Panel visible (glassmorphism) */}
             <div className="sidebar-panel">
                 <div className="sidebar-header">
-                    <h2>Categorías</h2>
-                    <p>Filtra piezas médicas</p>
+                    <h2>Filtros</h2>
+                    <p>Encuentra tu pieza ideal</p>
                 </div>
 
                 <div className="sidebar-content">
@@ -52,27 +67,60 @@ const FilterSidebar = ({ selectedCategory, onSelectCategory }) => {
                             <p>Cargando filtros...</p>
                         </div>
                     ) : (
-                        <ul className="category-list">
-                            <li className="category-item">
-                                <button
-                                    className={`category-button ${!selectedCategory ? 'active' : ''}`}
-                                    onClick={() => onSelectCategory(null)}
-                                >
-                                    <span>Todo el catálogo</span>
-                                </button>
-                            </li>
-                            {categories.map((cat) => (
-                                <li key={cat.Id_CategoriaPieza} className="category-item">
-                                    <button
-                                        className={`category-button ${isActive(cat) ? 'active' : ''}`}
-                                        onClick={() => onSelectCategory(cat)}
-                                    >
-                                        <span>{cat.Descripcion}</span>
-                                        {/* Futuro: Mostrar conteo si el backend lo soporta */}
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
+                        <>
+                            {/* Categories Section */}
+                            <div className="filter-section">
+                                <h3 className="filter-title">Categorías</h3>
+                                <ul className="category-list">
+                                    <li className="category-item">
+                                        <button
+                                            className={`category-button ${!selectedCategory ? 'active' : ''}`}
+                                            onClick={() => onSelectCategory(null)}
+                                        >
+                                            <span>Todas las categorías</span>
+                                        </button>
+                                    </li>
+                                    {categories.map((cat) => (
+                                        <li key={cat.Id_CategoriaPieza} className="category-item">
+                                            <button
+                                                className={`category-button ${isActiveCategory(cat) ? 'active' : ''}`}
+                                                onClick={() => onSelectCategory(cat)}
+                                            >
+                                                <span>{cat.Descripcion}</span>
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            {/* Divider */}
+                            <div className="sidebar-divider" />
+
+                            {/* Equipos Section */}
+                            <div className="filter-section">
+                                <h3 className="filter-title">Equipos Compatibles</h3>
+                                <ul className="category-list">
+                                    <li className="category-item">
+                                        <button
+                                            className={`category-button ${!selectedEquipo ? 'active' : ''}`}
+                                            onClick={() => onSelectEquipo && onSelectEquipo(null)}
+                                        >
+                                            <span>Todos los equipos</span>
+                                        </button>
+                                    </li>
+                                    {equipos.map((eq) => (
+                                        <li key={eq.Id_EquipoCompatible} className="category-item">
+                                            <button
+                                                className={`category-button ${isActiveEquipo(eq) ? 'active' : ''}`}
+                                                onClick={() => onSelectEquipo && onSelectEquipo(eq)}
+                                            >
+                                                <span>{eq.Nombre}</span>
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </>
                     )}
                 </div>
             </div>
