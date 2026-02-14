@@ -1,0 +1,86 @@
+.header {
+    background-color: #053f5c;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.header-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    /* Increased vertical padding as requested */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ... existing layout ... */
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    justify-content: flex-start;
+    position: relative;
+    z-index: 10;
+}
+
+.header-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 2;
+    gap: 0.5rem;
+}
+
+/* Search Styles Moved to Search.css */
+
+/* Header Right */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 20;
+}
+
+/* Brand Styles */
+.header-brand {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.brand-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    /* White text on blue background */
+    letter-spacing: -0.02em;
+    transition: color 0.3s ease;
+}
+
+.brand-year {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+}
+
+/* Scrolled State - Liquid Glass Effect on top of base color */
+.header-scrolled {
+    background-color: rgba(5, 63, 92, 0.85);
+    /* Slightly transparent version of #053f5c */
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}

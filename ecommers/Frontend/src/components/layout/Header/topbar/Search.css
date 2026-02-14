@@ -1,0 +1,46 @@
+/* Search Container Styles */
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: #417688;
+    /* Blue background */
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    /* Less rounded */
+    flex: 1;
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.search-container:focus-within {
+    background-color: #3a8caf;
+    /* Slightly darker blue on focus */
+    box-shadow: 0 0 0 3px rgba(66, 158, 189, 0.3);
+}
+
+.search-icon {
+    color: white;
+    margin-left: 0.75rem;
+    /* Icon is now on the right */
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.search-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 0.95rem;
+    color: white;
+    flex: 1;
+    width: auto;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    opacity: 1;
+}

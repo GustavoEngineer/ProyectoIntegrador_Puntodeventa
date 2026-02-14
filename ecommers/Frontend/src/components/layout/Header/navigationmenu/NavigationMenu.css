@@ -1,0 +1,81 @@
+.navigation-menu {
+    background-color: #f8f9fa;
+    /* Light grey/white background to contrast with blue header */
+    border-bottom: 1px solid #e5e7eb;
+    width: 100%;
+}
+
+.navigation-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; Removed to allow left align */
+    height: 48px;
+    /* Fixed height */
+    overflow-x: auto;
+    /* Allow scrolling if many categories */
+    scrollbar-width: none;
+    /* Hide scrollbar Firefox */
+}
+
+.navigation-container::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar Chrome/Safari */
+}
+
+.nav-item {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #4b5563;
+    /* Dark grey text */
+    font-weight: 500;
+    white-space: nowrap;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0.5rem;
+    /* Own space */
+}
+
+.nav-item:hover,
+.nav-item.active {
+    color: #053f5c;
+    /* Blue on hover */
+    background-color: rgba(5, 63, 92, 0.05);
+    border-radius: 4px;
+}
+
+.nav-item.active {
+    font-weight: 700;
+    background-color: rgba(5, 63, 92, 0.1);
+}
+
+.nav-item.all-departments {
+    font-weight: 600;
+    color: #053f5c;
+    padding-left: 1rem;
+    /* Restore padding */
+}
+
+.nav-divider {
+    width: 1px;
+    height: 24px;
+    background-color: #d1d5db;
+    margin: 0 1.5rem;
+    /* More space around divider */
+}
+
+.nav-categories {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    /* More gap between categories */
+    flex: 1;
+    justify-content: center;
+}

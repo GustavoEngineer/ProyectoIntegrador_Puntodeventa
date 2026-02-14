@@ -1,0 +1,21 @@
+.catalog-intro-button {
+    padding: 1rem 5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #053f5c;
+    background-color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    /* Revert to left alignment */
+    align-self: flex-start;
+    margin-top: 1.5rem;
+}
+
+.catalog-intro-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.3);
+    background-color: #f0f9ff;
+}

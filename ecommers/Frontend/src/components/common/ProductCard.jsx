@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useAuth } from '../../pages/main/context/AuthContext';
-import { useCart } from '../../pages/shopping-cart/context/CartContext';
+import { useAuth } from '../main/context/AuthContext';
+import { useCart } from '../shopping-cart/context/CartContext';
 import Button from './Button';
 import StarRating from './StarRating';
 import './ProductCard.css';

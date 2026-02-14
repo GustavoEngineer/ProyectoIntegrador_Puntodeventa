@@ -1,29 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from './pages/main/context/AuthContext';
-import { FavoritesProvider } from './pages/favorites/context/FavoritesContext';
-import { BreadcrumbProvider } from './pages/main/context/BreadcrumbContext';
+import { useAuth } from './components/main/context/AuthContext';
+import { FavoritesProvider } from './components/favorites/context/FavoritesContext';
+import { BreadcrumbProvider } from './components/main/context/BreadcrumbContext';
 
 // Nuevo navbar unificado
-import Navbar from './components/hero/Navbar';
+import Topbar from './components/layout/Header/topbar/Topbar';
 
 // Layouts
 
 
 // Pages
-import CatalogPage from './pages/main/CatalogPage';
-import ProductDetailPage from './pages/main/ProductDetailPage';
-import CartPage from './pages/shopping-cart/CartPage';
-import AccountPage from './pages/settings/AccountPage';
-import LoginPage from './pages/main/LoginPage';
-import RegisterPage from './pages/main/RegisterPage';
-import FavoritesPage from './pages/favorites/FavoritesPage';
+import CatalogPage from './components/main/CatalogPage';
+import ProductDetailPage from './components/main/ProductDetailPage';
+import CartPage from './components/shopping-cart/CartPage';
+import AccountPage from './components/settings/AccountPage';
+import LoginPage from './components/main/LoginPage';
+import RegisterPage from './components/main/RegisterPage';
+import FavoritesPage from './components/favorites/FavoritesPage';
 
 
 // Hero section for home
 import HeroSection from './components/hero/HeroSection';
-
+import CatalogIntroduction from './components/layout/body/promotionsection/CatalogIntroduction';
+import CategorySection from './components/layout/body/categorysection/CategorySection'; // Import CategorySection
 // Styles
-import './App.css';
+import './components/App.css';
 
 function AppContent() {
   const { isAuthenticated, isLoading, user } = useAuth();
@@ -209,27 +210,48 @@ function AppContent() {
     <BreadcrumbProvider onNavigate={handleBreadcrumbNavigate}>
       <div className="app-container">
         {/* Unified Navbar - always visible */}
-        <Navbar
-          isVisible={true}
-          onLoginClick={handleSwitchToLogin}
+        <Topbar
           onViewCart={handleViewCart}
           onViewFavorites={handleViewFavorites}
-          onViewHome={handleViewHome}
-
+          onViewCatalog={handleViewHome}
+          onViewAccount={handleViewAccount}
+          currentView={currentView}
           onSearch={setSearchQuery}
           searchQuery={searchQuery}
+          onSelectCategory={(category) => {
+            setSelectedCategory(category);
+            // Also navigate to home/catalog if not there
+            if (currentView !== 'home') setCurrentView('home');
+            // Scroll to catalog
+            setTimeout(() => {
+              const catalogSection = document.getElementById('catalog-section');
+              if (catalogSection) catalogSection.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+          }}
+          selectedCategory={selectedCategory}
         />
 
         {/* Home view - Hero + Catalog */}
         {!isSubPage && (
           <>
-            <HeroSection
+            {/* <HeroSection
               onLoginClick={handleSwitchToLogin}
               onViewCart={handleViewCart}
               onViewFavorites={handleViewFavorites}
               onSearch={setSearchQuery}
               searchQuery={searchQuery}
-            />
+            /> */}
+
+            <CatalogIntroduction />
+
+            {/* New Category Section */}
+            <CategorySection onSelectCategory={(category) => {
+              setSelectedCategory(category);
+              const catalogSection = document.getElementById('catalog-section');
+              if (catalogSection) {
+                catalogSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }} />
 
             <div id="catalog-section" className="catalog-section">
               <CatalogPage

@@ -1,0 +1,100 @@
+/* User Actions Container */
+.user-actions-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    /* Reduced gap since buttons expand */
+}
+
+/* Common Action Button Styles */
+.action-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    /* Icons are white */
+    transition: all 0.3s ease;
+    border-radius: 9999px;
+    /* Pill shape readiness */
+    gap: 0;
+    /* Gap animated */
+    height: 44px;
+    /* Fixed height for consistency */
+}
+
+.action-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.action-btn.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    gap: 0.5rem;
+    padding-right: 16px;
+}
+
+/* Icon Sizing */
+.action-btn svg {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+/* Action Text (Hidden by default) */
+.action-text {
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.action-btn.active .action-text {
+    max-width: 150px;
+    /* Enough to show text */
+    opacity: 1;
+}
+
+/* Cart Badge */
+.icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge-dot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    background-color: #ef4444;
+    /* Red badge */
+    border-radius: 50%;
+    border: 2px solid #053f5c;
+    /* Match header bg */
+}
+
+/* User Button Specifics */
+.user-btn.logged-in {
+    /* Override previous styles */
+    width: auto;
+    height: 44px;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+}
+
+.user-btn.logged-in:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.user-btn.logged-in.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
