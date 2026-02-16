@@ -1,0 +1,264 @@
+.deals-section {
+    width: calc(100% - 4rem);
+    max-width: none;
+    margin: 1.5rem auto;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+    /* Optional: retain some of CategorySection's style or keep it simple */
+}
+
+.deals-header {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.deals-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    /* Dark text for contrast */
+    margin: 0;
+    position: relative;
+    padding-left: 15px;
+}
+
+.deals-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 70%;
+    background-color: #007bff;
+    /* Primary brand color */
+    border-radius: 4px;
+}
+
+.deals-subtitle {
+    color: #666;
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+}
+
+.deals-carousel-container {
+    position: relative;
+    width: 100%;
+}
+
+.deals-carousel-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 1.5rem;
+    padding: 1rem 0.5rem 2rem 0.5rem;
+    /* Bottom padding for shadows */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
+}
+
+.deals-carousel-track::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+}
+
+.deals-carousel-item {
+    flex: 0 0 auto;
+    width: 250px;
+    /* Fixed width for cards */
+    transition: transform 0.3s ease;
+}
+
+.deals-carousel-item:hover {
+    transform: translateY(-5px);
+}
+
+.deals-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 1.2rem;
+    color: #333;
+    transition: all 0.2s ease;
+}
+
+.deals-nav-btn:hover {
+    background-color: #f8f9fa;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.deals-nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.deals-prev {
+    left: -20px;
+}
+
+.deals-next {
+    right: -20px;
+}
+
+/* Skeleton loading state */
+.deals-skeleton-track {
+    display: flex;
+    gap: 1.5rem;
+    overflow: hidden;
+}
+
+.deals-skeleton-card {
+    min-width: 250px;
+    height: 350px;
+    background: #f0f0f0;
+    border-radius: 12px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .deals-carousel-item {
+        width: 200px;
+    }
+}
+
+/* ForYou Grid Styles */
+/* ForYou Grid Styles */
+.foryou-section {
+    width: calc(100% - 4rem);
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+}
+
+.foryou-header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.foryou-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #222;
+    text-transform: capitalize;
+    margin: 0 1.5rem;
+    white-space: nowrap;
+}
+
+.foryou-header-line {
+    height: 1px;
+    background-color: #ddd;
+    flex-grow: 1;
+    max-width: 100px;
+    /* Short lines next to title */
+}
+
+.foryou-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    /* Force 5 columns on desktop */
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.foryou-grid .card-container {
+    width: 100%;
+    /* Ensure card takes full grid cell width */
+    height: 100%;
+}
+
+/* Adjust card image for grid view if needed */
+.foryou-grid .card-image-wrap {
+    height: 250px;
+    /* Slightly taller for grid look */
+}
+
+.foryou-load-more-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.foryou-load-more-btn {
+    background-color: transparent;
+    border: 2px solid #333;
+    color: #333;
+    padding: 0.8rem 3rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+}
+
+.foryou-load-more-btn:hover {
+    background-color: #333;
+    color: white;
+}
+
+.foryou-end-message {
+    text-align: center;
+    color: #888;
+    margin: 2.5rem 0 2rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+    .foryou-grid {
+        grid-template-columns: repeat(3, 1fr);
+        /* 3 columns on tablet */
+    }
+}
+
+@media (max-width: 768px) {
+    .foryou-section {
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    .foryou-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columns on mobile */
+        gap: 1rem;
+    }
+
+    .foryou-title {
+        font-size: 1.2rem;
+    }
+}

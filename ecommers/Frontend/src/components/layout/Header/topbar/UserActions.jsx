@@ -1,6 +1,6 @@
 import React from 'react';
-import { useCart } from '../../../shopping-cart/context/CartContext';
-import { useAuth } from '../../../main/context/AuthContext';
+import { useCart } from '../usersections/shopping-cart/context/CartContext';
+import { useAuth } from '../../body/main/context/AuthContext';
 import './UserActions.css';
 
 const UserActions = ({ onViewCart, onViewAccount, onViewFavorites, currentView }) => {

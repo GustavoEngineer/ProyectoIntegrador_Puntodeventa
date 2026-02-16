@@ -1,0 +1,127 @@
+.category-section {
+    width: calc(100% - 4rem);
+    margin: 1.5rem auto;
+    padding: 1.2rem 2rem;
+    background-color: #d5f1f7;
+    border-radius: 30px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.category-section-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #03293c;
+    margin-bottom: 0.8rem;
+    padding-left: 1rem;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.title-icon {
+    width: 24px;
+    height: 24px;
+    color: #03293c;
+    stroke-width: 2.5px;
+}
+
+.category-carousel-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.category-carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 2rem;
+    padding: 0.5rem 2rem;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    justify-content: center;
+    /* Center items if they fit */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.category-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    /* Align from top to keep icons consistent */
+    cursor: pointer;
+    min-width: 140px;
+    width: 140px;
+    transition: all 0.3s ease;
+    padding: 1rem;
+    border-radius: 15px;
+}
+
+.category-card:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+.category-card.active {
+    background-color: white;
+    box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.category-icon-wrapper {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0.8rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.category-card.active .category-icon-wrapper {
+    background-color: #9fe7f5;
+    border-color: white;
+}
+
+.category-card:hover .category-icon-wrapper {
+    box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
+}
+
+.category-icon-wrapper svg {
+    width: 32px;
+    height: 32px;
+    color: #03293c;
+    transition: all 0.3s ease;
+}
+
+.category-card.active .category-icon-wrapper svg {
+    color: #03293c;
+}
+
+.category-name {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #03293c;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    width: 100%;
+    min-height: 2.2rem;
+    /* Ensure 2 lines height for all */
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    line-height: 1.2;
+}

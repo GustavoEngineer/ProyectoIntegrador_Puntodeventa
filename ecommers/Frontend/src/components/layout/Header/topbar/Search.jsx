@@ -1,5 +1,5 @@
 import React from 'react';
-import useTopbarWritingEffect from '../../../../hooks/topbar_writing_effect';
+import useTopbarWritingEffect from '@/common/hooks/topbar_writing_effect';
 import './Search.css';
 
 const Search = ({ onSearch, searchQuery }) => {

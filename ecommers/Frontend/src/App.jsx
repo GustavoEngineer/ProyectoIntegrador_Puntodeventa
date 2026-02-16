@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from './components/main/context/AuthContext';
-import { FavoritesProvider } from './components/favorites/context/FavoritesContext';
-import { BreadcrumbProvider } from './components/main/context/BreadcrumbContext';
+import { useAuth } from './components/layout/body/main/context/AuthContext';
+import { FavoritesProvider } from './components/layout/Header/usersections/favorites/context/FavoritesContext';
+import { BreadcrumbProvider } from './components/layout/body/main/context/BreadcrumbContext';
 
 // Nuevo navbar unificado
 import Topbar from './components/layout/Header/topbar/Topbar';
@@ -10,19 +10,22 @@ import Topbar from './components/layout/Header/topbar/Topbar';
 
 
 // Pages
-import CatalogPage from './components/main/CatalogPage';
-import ProductDetailPage from './components/main/ProductDetailPage';
-import CartPage from './components/shopping-cart/CartPage';
-import AccountPage from './components/settings/AccountPage';
-import LoginPage from './components/main/LoginPage';
-import RegisterPage from './components/main/RegisterPage';
-import FavoritesPage from './components/favorites/FavoritesPage';
+import CatalogPage from './components/layout/body/main/CatalogPage';
+import ProductDetailPage from './components/layout/body/main/ProductDetailPage';
+import CartPage from './components/layout/Header/usersections/shopping-cart/CartPage';
+import AccountPage from './components/layout/Header/usersections/settings/AccountPage';
+import LoginPage from './components/layout/body/main/LoginPage';
+import RegisterPage from './components/layout/body/main/RegisterPage';
+import FavoritesPage from './components/layout/Header/usersections/favorites/FavoritesPage';
 
 
 // Hero section for home
-import HeroSection from './components/hero/HeroSection';
-import CatalogIntroduction from './components/layout/body/promotionsection/CatalogIntroduction';
-import CategorySection from './components/layout/body/categorysection/CategorySection'; // Import CategorySection
+import HeroSection from './components/3dmodel/HeroSection';
+import CatalogIntroduction from './components/layout/body/mainscreen/promotionsection/CatalogIntroduction';
+import PromotionDevice from './components/layout/body/mainscreen/promotionsection/PromotionDevice';
+import CategorySection from './components/layout/body/mainscreen/categorysection/CategorySection'; // Import CategorySection
+import Deals from './components/layout/body/mainscreen/quickviewproducts/Deals'; // Import Deals Carousel
+import ForYou from './components/layout/body/mainscreen/quickviewproducts/ForYou'; // Import ForYou Section
 // Styles
 import './components/App.css';
 
@@ -242,7 +245,16 @@ function AppContent() {
               searchQuery={searchQuery}
             /> */}
 
-            <CatalogIntroduction />
+            <div className="promotion-section-container">
+              <CatalogIntroduction />
+              <PromotionDevice onSelectEquipo={(equipo) => {
+                setSelectedEquipo(equipo);
+                const catalogSection = document.getElementById('catalog-section');
+                if (catalogSection) {
+                  catalogSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }} />
+            </div>
 
             {/* New Category Section */}
             <CategorySection onSelectCategory={(category) => {
@@ -253,7 +265,25 @@ function AppContent() {
               }
             }} />
 
-            <div id="catalog-section" className="catalog-section">
+            {/* Deals Carousel */}
+            <Deals
+              onViewProduct={(id) => {
+                setSelectedProductId(id);
+                setCurrentView('product');
+              }}
+              onRequireLogin={handleRequireAuth}
+            />
+
+            {/* For You Section */}
+            <ForYou
+              onViewProduct={(id) => {
+                setSelectedProductId(id);
+                setCurrentView('product');
+              }}
+              onRequireLogin={handleRequireAuth}
+            />
+
+            {/* <div id="catalog-section" className="catalog-section">
               <CatalogPage
                 onViewProduct={(id) => {
                   setSelectedProductId(id);
@@ -282,7 +312,7 @@ function AppContent() {
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
               />
-            </div>
+            </div> */}
           </>
         )}
 

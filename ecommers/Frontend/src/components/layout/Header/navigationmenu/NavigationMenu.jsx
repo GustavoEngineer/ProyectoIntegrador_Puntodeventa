@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { apiCall } from '../../../../services/api';
+import { apiCall } from '@/services/api';
 import './NavigationMenu.css';
 
 const NavigationMenu = ({ onSelectCategory, selectedCategory }) => {
