@@ -10,7 +10,7 @@ import Topbar from './components/layout/Header/topbar/Topbar';
 
 
 // Pages
-import CatalogPage from './components/layout/body/main/CatalogPage';
+import CatalogScreen from './components/layout/body/catalogscreen/CatalogScreen';
 import ProductDetailPage from './components/layout/body/main/ProductDetailPage';
 import CartPage from './components/layout/Header/usersections/shopping-cart/CartPage';
 import AccountPage from './components/layout/Header/usersections/settings/AccountPage';
@@ -26,6 +26,8 @@ import PromotionDevice from './components/layout/body/mainscreen/promotionsectio
 import CategorySection from './components/layout/body/mainscreen/categorysection/CategorySection'; // Import CategorySection
 import Deals from './components/layout/body/mainscreen/quickviewproducts/Deals'; // Import Deals Carousel
 import ForYou from './components/layout/body/mainscreen/quickviewproducts/ForYou'; // Import ForYou Section
+// Footer
+import Footer from './components/layout/footer/Footer';
 // Styles
 import './components/App.css';
 
@@ -113,8 +115,14 @@ function AppContent() {
   const handleBackToCatalog = (categoryId = null) => {
     const actualCategory = (categoryId && typeof categoryId === 'object' && categoryId.preventDefault) ? null : categoryId;
     setSelectedCategory(actualCategory);
-    setCurrentView('home');
+    setCurrentView('catalog');
     setSelectedProductId(null);
+  };
+
+  const handleViewCatalog = () => {
+    setCurrentView('catalog');
+    setSelectedProductId(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleViewHome = () => {
@@ -137,6 +145,9 @@ function AppContent() {
   // Breadcrumb Navigation Handler
   const handleBreadcrumbNavigate = (item) => {
     switch (item.type) {
+      case 'home':
+        handleViewHome();
+        break;
       case 'catalog':
         handleBackToCatalog();
         break;
@@ -183,6 +194,16 @@ function AppContent() {
   // All other views - use unified navbar + content
   const renderContent = () => {
     switch (currentView) {
+      case 'catalog':
+        return (
+          <CatalogScreen
+            onViewProduct={handleViewProduct}
+            selectedCategory={selectedCategory}
+            selectedEquipo={selectedEquipo}
+            searchQuery={searchQuery}
+            onRequireLogin={handleRequireAuth}
+          />
+        );
       case 'product':
         return (
           <ProductDetailPage
@@ -216,20 +237,19 @@ function AppContent() {
         <Topbar
           onViewCart={handleViewCart}
           onViewFavorites={handleViewFavorites}
-          onViewCatalog={handleViewHome}
+          onViewCatalog={handleViewCatalog}
           onViewAccount={handleViewAccount}
           currentView={currentView}
           onSearch={setSearchQuery}
+          onSearchSubmit={() => {
+            setCurrentView('catalog');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
           searchQuery={searchQuery}
           onSelectCategory={(category) => {
             setSelectedCategory(category);
-            // Also navigate to home/catalog if not there
-            if (currentView !== 'home') setCurrentView('home');
-            // Scroll to catalog
-            setTimeout(() => {
-              const catalogSection = document.getElementById('catalog-section');
-              if (catalogSection) catalogSection.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+            setCurrentView('catalog');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           selectedCategory={selectedCategory}
         />
@@ -249,20 +269,16 @@ function AppContent() {
               <CatalogIntroduction />
               <PromotionDevice onSelectEquipo={(equipo) => {
                 setSelectedEquipo(equipo);
-                const catalogSection = document.getElementById('catalog-section');
-                if (catalogSection) {
-                  catalogSection.scrollIntoView({ behavior: 'smooth' });
-                }
+                setCurrentView('catalog');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
               }} />
             </div>
 
             {/* New Category Section */}
             <CategorySection onSelectCategory={(category) => {
               setSelectedCategory(category);
-              const catalogSection = document.getElementById('catalog-section');
-              if (catalogSection) {
-                catalogSection.scrollIntoView({ behavior: 'smooth' });
-              }
+              setCurrentView('catalog');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
             }} />
 
             {/* Deals Carousel */}
@@ -283,36 +299,7 @@ function AppContent() {
               onRequireLogin={handleRequireAuth}
             />
 
-            {/* <div id="catalog-section" className="catalog-section">
-              <CatalogPage
-                onViewProduct={(id) => {
-                  setSelectedProductId(id);
-                  setCurrentView('product');
-                }}
-                onSelectCategory={(category) => {
-                  setSelectedCategory(category);
-                  // Stay on home view for immediate filtering
-                  const catalogSection = document.getElementById('catalog-section');
-                  if (catalogSection) {
-                    catalogSection.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-                selectedCategory={selectedCategory} // Pass the selected category
 
-                onSelectEquipo={(equipo) => {
-                  setSelectedEquipo(equipo);
-                  // Stay on home/catalog
-                  const catalogSection = document.getElementById('catalog-section');
-                  if (catalogSection) {
-                    catalogSection.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-                selectedEquipo={selectedEquipo}
-
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-              />
-            </div> */}
           </>
         )}
 
@@ -322,6 +309,9 @@ function AppContent() {
             {subPageContent}
           </div>
         )}
+
+        {/* Footer */}
+        <Footer />
       </div>
     </BreadcrumbProvider>
   );

@@ -1,17 +1,18 @@
 .breadcrumbs {
     /* Styles for the nav element itself */
-    font-size: 0.95rem;
+    font-size: 1.2rem;
     color: var(--text-secondary, #666);
 }
 
 .breadcrumb-wrapper {
     /* Standard positioning wrapper */
-    padding: 1rem 2rem;
+    padding: 0 0 1rem 0;
     width: 100%;
     max-width: 1400px;
-    /* Match layout constraints if any */
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 2rem;
+    /* Margin to avoid header clash / align nicely */
+    margin-top: 0;
+    text-align: left;
 }
 
 .breadcrumbs ol {

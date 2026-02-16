@@ -4,7 +4,7 @@ import Search from './Search';
 import UserActions from './UserActions';
 import NavigationMenu from '../navigationmenu/NavigationMenu';
 
-const Topbar = ({ onViewCart, onViewCategories, onViewAccount, onViewCatalog, onViewFavorites, currentView, onSearch, searchQuery, onSelectCategory, selectedCategory }) => {
+const Topbar = ({ onViewCart, onViewCategories, onViewAccount, onViewCatalog, onViewFavorites, currentView, onSearch, searchQuery, onSelectCategory, selectedCategory, onSearchSubmit }) => {
     // Scroll effect
     const [scrolled, setScrolled] = useState(false);
     useEffect(() => {
@@ -34,6 +34,7 @@ const Topbar = ({ onViewCart, onViewCategories, onViewAccount, onViewCatalog, on
                     <Search
                         onSearch={onSearch}
                         searchQuery={searchQuery}
+                        onSearchSubmit={onSearchSubmit}
                         onViewCategories={onViewCategories}
                     />
                 </div>

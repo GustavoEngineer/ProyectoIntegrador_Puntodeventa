@@ -12,7 +12,7 @@ export const useBreadcrumbs = () => {
 };
 
 export const BreadcrumbProvider = ({ children, onNavigate }) => {
-    const [breadcrumbs, setBreadcrumbs] = useState([{ label: 'Home', type: 'catalog', path: 'catalog' }]);
+    const [breadcrumbs, setBreadcrumbs] = useState([{ label: 'Página principal', type: 'catalog', path: 'catalog' }]);
 
     const pushBreadcrumb = (item) => {
         setBreadcrumbs((prev) => {
@@ -33,7 +33,7 @@ export const BreadcrumbProvider = ({ children, onNavigate }) => {
     };
 
     const resetBreadcrumbs = () => {
-        setBreadcrumbs([{ label: 'Home', type: 'catalog', path: 'catalog' }]);
+        setBreadcrumbs([{ label: 'Página principal', type: 'catalog', path: 'catalog' }]);
     };
 
     const handleBreadcrumbClick = (item) => {
