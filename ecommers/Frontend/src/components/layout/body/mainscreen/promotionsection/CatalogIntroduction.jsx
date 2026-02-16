@@ -4,7 +4,7 @@ import useRandomEquipos from '@/common/hooks/useRandomEquipos';
 import medicalDeviceImg from '@/assets/medicaldevice.jpeg';
 import CatalogButton from './CatalogButton';
 
-const CatalogIntroduction = () => {
+const CatalogIntroduction = ({ onViewCatalog }) => {
     return (
         <div
             className="catalog-introduction-card"
@@ -14,7 +14,7 @@ const CatalogIntroduction = () => {
             <div className="catalog-intro-content">
                 <h2>Bienvenido a MediParts</h2>
                 <p>Encuentra las mejores refacciones médicas para tus equipos.</p>
-                <CatalogButton />
+                <CatalogButton onClick={onViewCatalog} />
             </div>
         </div>
     );

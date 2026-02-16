@@ -1,8 +1,8 @@
 import React from 'react';
 import { useFavorites } from './context/FavoritesContext';
-import { useAuth } from '@/components/layout/body/main/context/AuthContext';
+import { useAuth } from '@/components/layout/body/authenticationscreen/AuthContext';
 import { useCart } from '../shopping-cart/context/CartContext';
-import { useBreadcrumbs } from '@/components/layout/body/main/context/BreadcrumbContext'; // Updated path
+import { useBreadcrumbs } from '@/common/components/BreadcrumbContext';
 import Breadcrumbs from '@/common/components/Breadcrumbs'; // Updated path
 import './FavoritesPage.css';
 

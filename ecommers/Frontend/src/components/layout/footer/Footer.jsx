@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useAuth } from '../body/main/context/AuthContext';
-import RhombusLogo from '@/components/3dmodel/RhombusLogo';
+import { useAuth } from '../body/authenticationscreen/AuthContext';
+import RhombusLogo from '@/features/3dmodel/RhombusLogo';
 import './Footer.css';
 
 const Footer = () => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from './components/layout/body/main/context/AuthContext';
+import { useAuth } from './components/layout/body/authenticationscreen/AuthContext';
 import { FavoritesProvider } from './components/layout/Header/usersections/favorites/context/FavoritesContext';
-import { BreadcrumbProvider } from './components/layout/body/main/context/BreadcrumbContext';
+import { BreadcrumbProvider } from './common/components/BreadcrumbContext';
 
 // Nuevo navbar unificado
 import Topbar from './components/layout/Header/topbar/Topbar';
@@ -11,16 +11,16 @@ import Topbar from './components/layout/Header/topbar/Topbar';
 
 // Pages
 import CatalogScreen from './components/layout/body/catalogscreen/CatalogScreen';
-import ProductDetailPage from './components/layout/body/main/ProductDetailPage';
+import ProductDetailPage from './common/components/parts/ProductDetailPage';
 import CartPage from './components/layout/Header/usersections/shopping-cart/CartPage';
 import AccountPage from './components/layout/Header/usersections/settings/AccountPage';
-import LoginPage from './components/layout/body/main/LoginPage';
-import RegisterPage from './components/layout/body/main/RegisterPage';
+import LoginPage from './components/layout/body/authenticationscreen/LoginPage';
+import RegisterPage from './components/layout/body/authenticationscreen/RegisterPage';
 import FavoritesPage from './components/layout/Header/usersections/favorites/FavoritesPage';
 
 
 // Hero section for home
-import HeroSection from './components/3dmodel/HeroSection';
+import HeroSection from './features/3dmodel/HeroSection';
 import CatalogIntroduction from './components/layout/body/mainscreen/promotionsection/CatalogIntroduction';
 import PromotionDevice from './components/layout/body/mainscreen/promotionsection/PromotionDevice';
 import CategorySection from './components/layout/body/mainscreen/categorysection/CategorySection'; // Import CategorySection
@@ -266,7 +266,7 @@ function AppContent() {
             /> */}
 
             <div className="promotion-section-container">
-              <CatalogIntroduction />
+              <CatalogIntroduction onViewCatalog={handleViewCatalog} />
               <PromotionDevice onSelectEquipo={(equipo) => {
                 setSelectedEquipo(equipo);
                 setCurrentView('catalog');

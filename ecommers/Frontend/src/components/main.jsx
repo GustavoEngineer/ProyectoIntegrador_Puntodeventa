@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from '../App'
-import { AuthProvider } from './layout/body/main/context/AuthContext';
+import { AuthProvider } from './layout/body/authenticationscreen/AuthContext';
 import { CartProvider } from './layout/Header/usersections/shopping-cart/context/CartContext';
 
 createRoot(document.getElementById('root')).render(

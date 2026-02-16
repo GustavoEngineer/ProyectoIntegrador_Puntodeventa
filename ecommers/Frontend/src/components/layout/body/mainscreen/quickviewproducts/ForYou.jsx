@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import ProductCard from '@/common/components/ProductCard';
+import ProductCard from '@/common/components/parts/ProductCard';
 import useRandomProducts from '@/common/hooks/useRandomProducts';
 import './Deals.css'; // Reusing Deals styling for basic access, plus new foryou- styles
 

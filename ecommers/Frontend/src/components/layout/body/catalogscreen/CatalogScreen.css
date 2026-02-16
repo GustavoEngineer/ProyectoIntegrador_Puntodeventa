@@ -5,6 +5,7 @@
     animation: fadeIn 0.5s ease-in-out;
 }
 
+
 .catalog-screen-container .breadcrumb-wrapper {
     margin-top: -3.5rem;
     margin-left: 0;
@@ -29,9 +30,42 @@
 
 .catalog-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
     padding: 1rem 0;
+    margin-left: 20%;
+    /* Offset for catalog content */
+    width: auto;
+}
+
+@media (max-width: 1200px) {
+    .catalog-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .catalog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .catalog-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+
+    .catalog-grid,
+    .pagination-container,
+    .catalog-loading,
+    .catalog-error,
+    .catalog-empty {
+        margin-left: 0;
+        /* Reset offset on smaller screens */
+    }
 }
 
 .catalog-loading,
@@ -41,6 +75,8 @@
     padding: 3rem;
     font-size: 1.2rem;
     color: #666;
+    margin-left: 20%;
+    /* Offset for status messages */
 }
 
 .catalog-error {
@@ -54,6 +90,8 @@
     gap: 0.5rem;
     margin-top: 3rem;
     padding-bottom: 2rem;
+    margin-left: 20%;
+    /* Offset for pagination */
 }
 
 .pagination-number,

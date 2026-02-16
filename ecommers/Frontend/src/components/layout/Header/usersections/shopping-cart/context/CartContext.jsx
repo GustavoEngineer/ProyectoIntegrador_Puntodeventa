@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useAuth } from '@/components/layout/body/main/context/AuthContext';
+import { useAuth } from '@/components/layout/body/authenticationscreen/AuthContext';
 import { apiCall } from '@/services/api';
 
 const CartContext = createContext();

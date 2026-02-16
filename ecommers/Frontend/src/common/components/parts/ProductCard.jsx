@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useAuth } from '../../components/layout/body/main/context/AuthContext';
-import { useCart } from '../../components/layout/Header/usersections/shopping-cart/context/CartContext';
-import Button from './Button';
-import StarRating from './StarRating';
+import { useAuth } from '../../../components/layout/body/authenticationscreen/AuthContext';
+import { useCart } from '../../../components/layout/Header/usersections/shopping-cart/context/CartContext';
+import Button from '../Button';
+import StarRating from '../StarRating';
 import './ProductCard.css';
 
 const ProductCard = ({ product, onViewDetails, onRequireLogin }) => {

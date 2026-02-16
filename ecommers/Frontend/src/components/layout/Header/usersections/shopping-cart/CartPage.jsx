@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useCart } from './context/CartContext';
-import { useAuth } from '@/components/layout/body/main/context/AuthContext';
-import { useBreadcrumbs } from '@/components/layout/body/main/context/BreadcrumbContext';
+import { useAuth } from '@/components/layout/body/authenticationscreen/AuthContext';
+import { useBreadcrumbs } from '@/common/components/BreadcrumbContext';
 import Button from '@/common/components/Button';
 import Breadcrumbs from '@/common/components/Breadcrumbs';
 import './CartPage.css';

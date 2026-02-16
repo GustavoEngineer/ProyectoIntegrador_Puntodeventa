@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import ProductCard from '@/common/components/ProductCard';
+import ProductCard from '@/common/components/parts/ProductCard';
 import { apiCall } from '@/services/api';
 import './Deals.css';
 

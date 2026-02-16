@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { apiCall } from '@/services/api';
-import ProductCard from '@/common/components/ProductCard';
+import ProductCard from '@/common/components/parts/ProductCard';
 import Breadcrumbs from '@/common/components/Breadcrumbs';
-import { useBreadcrumbs } from '../main/context/BreadcrumbContext';
+import { useBreadcrumbs } from '@/common/components/BreadcrumbContext';
 import './CatalogScreen.css';
 
 const CatalogScreen = ({
@@ -18,7 +18,7 @@ const CatalogScreen = ({
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-    const LIMIT = 12; // Adjust limit as needed
+    const LIMIT = 20; // 4 items * 5 rows
     const catalogTopRef = useRef(null);
     const { breadcrumbs, resetBreadcrumbs, handleBreadcrumbClick, pushBreadcrumb } = useBreadcrumbs();
 

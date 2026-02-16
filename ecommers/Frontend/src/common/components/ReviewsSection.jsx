@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../components/layout/body/main/context/AuthContext';
+import { useAuth } from '../../components/layout/body/authenticationscreen/AuthContext';
 import { apiCall } from '../../services/api';
 import StarRating from './StarRating';
 import Button from './Button';

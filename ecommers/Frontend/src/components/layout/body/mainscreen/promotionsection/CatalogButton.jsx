@@ -1,13 +1,9 @@
 import React from 'react';
 import './CatalogButton.css';
 
-const CatalogButton = () => {
-    const scrollToCatalog = () => {
-        document.getElementById('catalog-section')?.scrollIntoView({ behavior: 'smooth' });
-    };
-
+const CatalogButton = ({ onClick }) => {
     return (
-        <button className="catalog-intro-button" onClick={scrollToCatalog}>
+        <button className="catalog-intro-button" onClick={onClick}>
             Ver Catálogo
         </button>
     );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '@/components/layout/body/main/context/AuthContext';
+import { useAuth } from '@/components/layout/body/authenticationscreen/AuthContext';
 import './AccountPage.css';
 
 const AccountPage = () => {
